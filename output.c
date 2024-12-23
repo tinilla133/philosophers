@@ -1,23 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   output.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/22 15:51:52 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/23 17:28:40 by fvizcaya         ###   ########.fr       */
+/*   Created: 2024/12/23 13:52:27 by fvizcaya          #+#    #+#             */
+/*   Updated: 2024/12/23 13:53:27 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
-{
-	t_dinner	dinner;
-
-	if (ft_parse_args(argc, argv, &dinner.args) == -1)
-		return (0);
-		ft_init(&dinner);
-		ft_dinner(&dinner);
-}
+void	ft_print()

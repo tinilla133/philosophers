@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/22 15:51:52 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/23 17:28:40 by fvizcaya         ###   ########.fr       */
+/*   Created: 2024/12/23 14:41:58 by fvizcaya          #+#    #+#             */
+/*   Updated: 2024/12/23 17:26:20 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+inline int	ft_get_current_time(void)
 {
-	t_dinner	dinner;
+	struct timeval	curr_time;
 
-	if (ft_parse_args(argc, argv, &dinner.args) == -1)
-		return (0);
-		ft_init(&dinner);
-		ft_dinner(&dinner);
+	gettimeofday(&curr_time, NULL);
+	return ((int) curr_time.tv_usec / 1000);
 }

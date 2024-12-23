@@ -3,43 +3,38 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fvizcaya <fvizcaya@student.42.fr>          +#+  +:+       +#+         #
+#    By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/26 12:02:18 by fvizcaya          #+#    #+#              #
-#    Updated: 2024/07/05 12:31:15 by fvizcaya         ###   ########.fr        #
+#    Updated: 2024/12/24 00:04:28 by fvizcaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = clang 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -lpethread 
 
-NAME = push_swap
-LIBFT_DIR = libft/
-LIBFT = libft.a
-BONUS_DIR = checker/
-SRC = \
-	arguments_parsing.c arguments_validation.c find_positions.c main.c movements.c \
-	push_swap.c rotate_movements.c rotate_to_head.c order_checking.c \
-	set_indexes.c sort_small_sizes.c stack.c utils.c
+NAME = philo
+SRC_DIR = src/
+
+SRC = $(SRC_DIR)/actions.c
+SRC += $(SRC_DIR)/arguments.c
+SRC += $(SRC_DIR)/init.c
+SRC += $(SRC_DIR)/main.c
+SRC += $(SRC_DIR)/philo.c
+SRC += $(SRC_DIR)/print.c
+SRC += $(SRC_DIR)/time.c
+
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
-bonus:
-	make -C $(BONUS_DIR)
-
 $(NAME): $(OBJ)
-	make -C $(LIBFT_DIR)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT_DIR)$(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
 clean:
-	make clean -C $(LIBFT_DIR)
-	make clean -C $(BONUS_DIR)
 	rm -rf $(OBJ)
 
 fclean: clean
-	make fclean -C $(LIBFT_DIR)
-	make fclean -C $(BONUS_DIR)
 	rm -rf $(NAME)
 	
 re: fclean all
