@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 13:43:31 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/25 01:00:20 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/25 18:28:02 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	ft_eat(t_dinner *dinner, t_philo *philo)
 	ft_print_status(philo, &dinner->std_out);
 	while (aux_timer <= timer - init_timer)
 		aux_timer++;
+	philo->num_meals++;
 	philo->last_meal_time = ft_get_current_time();
 	return (0);
 }

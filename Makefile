@@ -6,7 +6,7 @@
 #    By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/26 12:02:18 by fvizcaya          #+#    #+#              #
-#    Updated: 2024/12/24 00:04:28 by fvizcaya         ###   ########.fr        #
+#    Updated: 2024/12/25 19:21:11 by fvizcaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,8 @@ SRC_DIR = src/
 
 SRC = $(SRC_DIR)/actions.c
 SRC += $(SRC_DIR)/arguments.c
+SRC += $(SRC_DIR)/dinner.c
+SRC += $(SRC_DIR)/fork_actions.c
 SRC += $(SRC_DIR)/init.c
 SRC += $(SRC_DIR)/main.c
 SRC += $(SRC_DIR)/philo.c

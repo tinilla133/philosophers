@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 11:18:22 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/25 14:25:46 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/25 20:41:08 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,15 @@
 # include <pthread.h>
 # include <limits.h>                 
 # include <sys/time.h>
-# include <time.h>    
+# include <time.h>
 
 # define MAX_THREADS 61593
+
+typedef enum e_bool
+{
+	false,
+	true
+}			t_bool;
 
 typedef struct s_args
 {
@@ -36,11 +42,11 @@ typedef struct s_philo
 	int				id;
 	pthread_t		thread;
 	int				last_meal_time;
-	int				times_eaten;
-	int				dead;
-	int				l_fork;
-	int				r_fork;
-}					t_philo;
+	int				num_meals;
+	t_bool			dead;
+	t_bool			l_fork;
+	t_bool			r_fork;
+}				t_philo;
 
 typedef struct s_dinner
 {
@@ -49,8 +55,8 @@ typedef struct s_dinner
 	t_args			args;
 	t_philo			*philos;
 	int				prioritary;
-	pthread_mutex_t	dispatcher;
-	pthread_mutex_t	mtx_forks;
+	pthread_t		dispatcher;
+	pthread_mutex_t	mutex_dispatcher;
 	pthread_mutex_t	mutex_forks;
 	pthread_mutex_t	std_out;
 }				t_dinner;
@@ -62,7 +68,7 @@ typedef enum e_status
 	sleeping,
 	thinking,
 	dead
-}			 t_status;
+}				t_status;
 
 int		ft_parse_args(int argc, char **argv, t_args *args);
 int		ft_init(t_dinner *dinner);
@@ -74,5 +80,8 @@ void	ft_think(t_dinner *dinner, t_philo *philo);
 int		ft_pickup_fork(t_dinner *dinner, t_philo *philo);
 void	ft_drop_forks(t_dinner *dinner, t_philo *philo);
 void	ft_print_status(t_philo	*philo, pthread_mutex_t *std_out);
+void	*ft_dispatcher(void *ptr);
+t_bool	ft_end_of_dinner(t_dinner *dinner);
+void	ft_stop_dinner(t_dinner *dinner);
 
 #endif

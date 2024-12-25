@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:37:17 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/25 14:23:35 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/25 20:43:08 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_alloc_data_structs(t_args args, t_dinner *dinner)
 {
-	dinner->forks = (int *) malloc (args.num_philos * sizeof (int));
+	dinner->forks = (int *) malloc ((args.num_philos + 1) * sizeof (int));
 	if (!dinner->forks)
 		return (-1);
 	ft_init_forks(dinner);
@@ -42,11 +42,11 @@ static void	ft_init_philos(t_dinner *dinner)
 	while (i < dinner->num_philos)
 	{
 		dinner->philos[i].id = i + 1;
-		dinner->philos[i].dead = 0;
+		dinner->philos[i].dead = false;
 		dinner->philos[i].last_meal_time = ft_get_current_time();
-		dinner->philos[i].l_fork = -1;
-		dinner->philos[i].r_fork = -1;
-		dinner->philos[i].times_eaten = 0;
+		dinner->philos[i].l_fork = false;
+		dinner->philos[i].r_fork = false;
+		dinner->philos[i].num_meals = 0;
 		dinner->philos[i].status = thinking;
 		i++;
 	}
@@ -59,9 +59,10 @@ void	ft_create_threads(t_dinner *dinner)
 
 	i = 0;
 	while (i < dinner->args.num_philos)
-	{
-		pthread_create(&dinner->philos[i++].philo_mutex, NULL, ft_philo, dinner);
-	}
+		pthread_create(&dinner->philos[i++].philo_mutex, \
+						NULL, ft_philo, dinner);
+	pthread_create(&dinner->mutex_dispatcher, NULL, ft_dispatcher, \
+					dinner);
 }
 
 int	ft_init(t_dinner *dinner)
