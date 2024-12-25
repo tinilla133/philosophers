@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 11:18:22 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/25 01:03:14 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/25 14:25:46 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <time.h>    
 
 # define MAX_THREADS 61593
-# define INITIAL_PHILOSOPHER 1
 
 typedef struct s_args
 {
@@ -33,6 +32,7 @@ typedef struct s_args
 typedef struct s_philo
 {
 	t_status		status;
+	pthread_mutex_t	philo_mutex;
 	int				id;
 	pthread_t		thread;
 	int				last_meal_time;
@@ -67,6 +67,7 @@ typedef enum e_status
 int		ft_parse_args(int argc, char **argv, t_args *args);
 int		ft_init(t_dinner *dinner);
 int		ft_get_current_time(void);
+void	*ft_philo(void *ptr);
 int		ft_eat(t_dinner *dinner, t_philo *philo);
 void	ft_sleep(t_dinner *dinner, t_philo *philo);
 void	ft_think(t_dinner *dinner, t_philo *philo);

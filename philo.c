@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 17:28:50 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/25 01:02:19 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/25 14:26:04 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,7 @@ int	ft_is_dead(t_dinner *dinner)
 	return (0);
 }
 
-void	ft_dinner(t_dinner *dinner)
-{
-
-}
-
-void	*philo(void *ptr)
+void	*ft_philo(void *ptr)
 {
 	t_dinner	*dinner;
 	int			i;

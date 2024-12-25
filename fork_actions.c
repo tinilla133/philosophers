@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 16:53:22 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/24 18:05:57 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/25 14:36:09 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static int	ft_forks_free(t_dinner *dinner)
 int	ft_pickup_fork(t_dinner *dinner, t_philo *philo)
 {
 	int	i;
+	int	r_fork_num;
 
 	i = 0;
 	if (!ft_forks_free(dinner))
@@ -40,6 +41,7 @@ int	ft_pickup_fork(t_dinner *dinner, t_philo *philo)
 	pthread_mutex_lock(&dinner->mutex_forks);
 	philo->status = picking_fork;
 	ft_print_status(philo, &dinner->std_out);
+	
 	while (i < dinner->args.num_philos || !(philo->l_fork && philo->r_fork))
 	{
 		if (!dinner->forks[i])
