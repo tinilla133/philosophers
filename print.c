@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:56:27 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/23 22:33:17 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/24 16:00:47 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_print_status(t_philo	*philo, pthread_mutex_t *std_out)
 {
 	char	status[16];
 
-	if (philo->status == taking_fork)
+	if (philo->status == picking_fork)
 		ft_strcpy("is taking a fork", status, 16);
 	if (philo->status == eating)
 		ft_strcpy("is eating", status, 16);

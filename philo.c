@@ -6,11 +6,25 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 17:28:50 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/24 00:03:12 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/25 01:02:19 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	ft_is_dead(t_dinner *dinner)
+{
+	int	i;
+
+	i = 0;
+	while (i < dinner->num_philos)
+	{
+		if (dinner->philos[i].status == dead)
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 void	ft_dinner(t_dinner *dinner)
 {
@@ -33,6 +47,9 @@ void	*philo(void *ptr)
 	empate, no se cambia la variable). Así, insistiremos con ése hasta que pueda tomar 
 	ambos tenedores.
 
+	************ Comer **********************
+	************ Soltar tenedores ***********
+
 	********** Dormir ********************
 
 	Cuando un filósofo termina de comer (ft_eat devuelve cero) se le manda a dormir.
@@ -42,14 +59,14 @@ void	*philo(void *ptr)
 	// Dormir
 	********** Pensar ********************
 
-	A falta de leer el subject al respecto, no creo que haya que poner ninguna condición 
-	ni tiempo. Cuando un filósofo no está comiendo ni durmiendo, está pensando.
+	No hay ninguna condición de orden ni de tiempo en el subject para pensar, por tanto, 
+	consideramos que cuando un filósofo no está comiendo ni durmiendo, está pensando.
 	*/
 	i = 0;
 	ft_pickup_fork(dinner, &dinner->philos[i]);
-	if (!ft_eat(&dinner->philos[i]))
+	if (!ft_eat(dinner, &dinner->philos[i]))
 	{
-		ft_drop_forks(dinner, dinner->philos[i]);
-		ft_sleep();
+		ft_drop_forks(dinner, &dinner->philos[i]);
+		ft_sleep(dinner, &dinner->philos[i]);
 	}
 }

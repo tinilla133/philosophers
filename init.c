@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:37:17 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/23 20:24:02 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/25 00:49:30 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,9 @@ static int	ft_alloc_data_structs(t_args args, t_dinner *dinner)
 	if (!dinner->forks)
 		return (-1);
 	ft_init_forks(dinner);
-	dinner->philos = (t_philo *) malloc ((args.num_philos + 1) * sizeof (t_philo));
+	dinner->philos = (t_philo *) malloc ((args.num_philos + 1) * \
+					sizeof (t_philo));
 	if (!dinner->philos)
-		return (-1);
-	ft_init_philos(dinner);
-	dinner->mtx_forks = (pthread_mutex_t *) malloc ((args.num_philos + 1) * sizeof (pthread_mutex_t));
-	if (!dinner->forks)
 		return (-1);
 	return (0);
 }
@@ -34,7 +31,7 @@ static void	ft_init_forks(t_dinner *dinner)
 
 	i = 0;
 	while (i < (dinner->num_philos - 1))
-		dinner->forks[i++] = -1;
+		dinner->forks[i++] = 0;
 }
 
 static void	ft_init_philos(t_dinner *dinner)
@@ -50,7 +47,7 @@ static void	ft_init_philos(t_dinner *dinner)
 		dinner->philos[i].l_fork = -1;
 		dinner->philos[i].r_fork = -1;
 		dinner->philos[i].times_eaten = 0;
-		dinner->philos[i].status = 0;
+		dinner->philos[i].status = thinking;
 		i++;
 	}
 	return (0);
@@ -62,5 +59,5 @@ int	ft_init(t_dinner *dinner)
 		return (-1);
 	ft_init_forks(dinner);
 	ft_init_philos(dinner);
-	return( 0);
+	return (0);
 }
