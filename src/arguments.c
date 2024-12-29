@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 11:23:06 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/29 22:17:09 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/30 00:14:56 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static long long	ft_atol(const char *str)
 
 int	ft_parse_args(int argc, char **argv, t_args *args)
 {
-	if (argc != 4 && argc != 5)
+	if (argc < 5  || argc > 6)
 		return (-1);
 	if (ft_valid_characters(argv) == -1)
 		return (-1);

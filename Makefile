@@ -6,15 +6,15 @@
 #    By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/26 12:02:18 by fvizcaya          #+#    #+#              #
-#    Updated: 2024/12/29 21:55:03 by fvizcaya         ###   ########.fr        #
+#    Updated: 2024/12/30 00:21:22 by fvizcaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = clang 
-CFLAGS = -Wall -Wextra -Werror -lpthread 
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -lpthread -I . 
 
 NAME = philo
-SRC_DIR = src
+SRC_DIR = src/
 
 SRC = actions.c
 SRC += arguments.c
@@ -26,7 +26,8 @@ SRC += philo.c
 SRC += print.c
 SRC += time.c
 
-OBJ := $(patsubst $(SRC_DIR)%.,$(SRC_DIR)%.o,$(SRC))
+__SRC = $(addprefix $(SRC_DIR), $(SRC))
+OBJ	= $(__SRC:.c=.o)
 
 all: $(NAME)
 
@@ -34,7 +35,7 @@ $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
 clean:
-	rm -rf *.o
+	rm -rf $(SRC_DIR)*.o
 
 fclean: clean
 	rm -rf $(NAME)

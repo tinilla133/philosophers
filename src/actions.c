@@ -6,11 +6,11 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 13:43:31 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/25 18:28:02 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/30 00:20:17 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include <philo.h>
 
 int	ft_eat(t_dinner *dinner, t_philo *philo)
 {
