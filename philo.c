@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 17:28:50 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/25 14:26:04 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/29 22:23:53 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ int	ft_is_dead(t_dinner *dinner)
 
 void	*ft_philo(void *ptr)
 {
-	t_dinner	*dinner;
+	t_philoargs	*args;
 	int			i;
 
-	dinner = (t_dinner *) ptr;
+	args = (t_philoargs *) ptr;
+	i = args->philo_num;
 	/*
 	********** Coger tenedores *************
 	
@@ -57,11 +58,18 @@ void	*ft_philo(void *ptr)
 	No hay ninguna condición de orden ni de tiempo en el subject para pensar, por tanto, 
 	consideramos que cuando un filósofo no está comiendo ni durmiendo, está pensando.
 	*/
-	i = 0;
-	ft_pickup_fork(dinner, &dinner->philos[i]);
-	if (!ft_eat(dinner, &dinner->philos[i]))
+	while (true)
 	{
-		ft_drop_forks(dinner, &dinner->philos[i]);
-		ft_sleep(dinner, &dinner->philos[i]);
+		ft_think(&args->dinner, &args->dinner.philos[i]);
+		if (!ft_pickup_forks(&args->dinner, &args->dinner.philos[i]))
+		{
+			if (!ft_eat(&args->dinner, &args->dinner.philos[i]))
+			{
+				ft_drop_forks(&args->dinner, &args->dinner.philos[i]);
+				ft_sleep(&args->dinner, &args->dinner.philos[i]);
+			}
+		}
+		return (NULL);
 	}
 }
+

@@ -6,27 +6,27 @@
 #    By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/26 12:02:18 by fvizcaya          #+#    #+#              #
-#    Updated: 2024/12/25 19:21:11 by fvizcaya         ###   ########.fr        #
+#    Updated: 2024/12/29 21:55:03 by fvizcaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = clang 
-CFLAGS = -Wall -Wextra -Werror -lpethread 
+CFLAGS = -Wall -Wextra -Werror -lpthread 
 
 NAME = philo
-SRC_DIR = src/
+SRC_DIR = src
 
-SRC = $(SRC_DIR)/actions.c
-SRC += $(SRC_DIR)/arguments.c
-SRC += $(SRC_DIR)/dinner.c
-SRC += $(SRC_DIR)/fork_actions.c
-SRC += $(SRC_DIR)/init.c
-SRC += $(SRC_DIR)/main.c
-SRC += $(SRC_DIR)/philo.c
-SRC += $(SRC_DIR)/print.c
-SRC += $(SRC_DIR)/time.c
+SRC = actions.c
+SRC += arguments.c
+SRC += dinner.c
+SRC += fork_actions.c
+SRC += init.c
+SRC += main.c
+SRC += philo.c
+SRC += print.c
+SRC += time.c
 
-OBJ = $(SRC:.c=.o)
+OBJ := $(patsubst $(SRC_DIR)%.,$(SRC_DIR)%.o,$(SRC))
 
 all: $(NAME)
 
@@ -34,7 +34,7 @@ $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
 clean:
-	rm -rf $(OBJ)
+	rm -rf *.o
 
 fclean: clean
 	rm -rf $(NAME)

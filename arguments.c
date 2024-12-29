@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 11:23:06 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/17 19:30:53 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/29 22:17:09 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static int	ft_valid_characters(char **argv)
 	{
 		while (**argv)
 		{
-			if (**argv < '0' && **argv > '9')
+			if (**argv < '0' || **argv > '9')
 				return (-1);
-			*((*argv)++);
+			(*argv)++;
 		}
 	}
 	return (0);
@@ -38,15 +38,12 @@ static int	ft_valid_characters(char **argv)
 
 static int	ft_arg_overflow(char **argv)
 {
-	int	sum;
-	int	arglen;
-
-	arglen = ft_strlen(argv[1]);
 	if (ft_strlen(argv[1]) > 10)
 		return (-1);
-	if (ft_strlen(argv[2]) > 19 || ft_strlen(argv[3] > 19 || \
-		ft_strlen(argv[4] > 19)))
+	if (ft_strlen(argv[2]) > 19 || ft_strlen(argv[3]) > 19 || \
+		ft_strlen(argv[4]) > 19)
 		return (-1);
+	return (0);
 }
 
 static long long	ft_atol(const char *str)
@@ -75,7 +72,7 @@ static long long	ft_atol(const char *str)
 
 int	ft_parse_args(int argc, char **argv, t_args *args)
 {
-	if (argc != 5 || argc != 6)
+	if (argc != 4 && argc != 5)
 		return (-1);
 	if (ft_valid_characters(argv) == -1)
 		return (-1);

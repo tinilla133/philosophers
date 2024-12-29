@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 19:20:17 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/25 20:40:34 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/29 22:19:54 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_stop_dinner(t_dinner *dinner)
 
 	i = 0;
 	while (i < dinner->args.num_philos)
-		pthread_join(&dinner->philos[i++], NULL);
+		pthread_join(dinner->philos[i++].thread, NULL);
 	free (dinner->philos);
 	free (dinner->forks);
 }

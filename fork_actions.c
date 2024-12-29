@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 16:53:22 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/25 18:02:40 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/29 22:18:54 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 static t_bool	ft_forks_free(t_dinner *dinner, t_philo *philo)
 {
-	int	i;
 	int	r_fork_num;
 
-	i = 0;
 	if (philo->id == dinner->args.num_philos)
 		r_fork_num = 0;
 	else
@@ -29,12 +27,10 @@ static t_bool	ft_forks_free(t_dinner *dinner, t_philo *philo)
 	return (true);
 }
 
-int	ft_pickup_fork(t_dinner *dinner, t_philo *philo)
+int	ft_pickup_forks(t_dinner *dinner, t_philo *philo)
 {
-	int	i;
 	int	r_fork_num;
 
-	i = 0;
 	if (!ft_forks_free(dinner, philo))
 		return (-1);
 	if (philo->id == dinner->args.num_philos)

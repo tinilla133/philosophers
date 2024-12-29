@@ -6,13 +6,15 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 11:18:22 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/25 20:41:08 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2024/12/29 22:19:19 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef _PHILO_H_
 # define _PHILO_H_
 
+# include <stdlib.h>
+# include <stdio.h>
 # include <pthread.h>
 # include <limits.h>                 
 # include <sys/time.h>
@@ -25,6 +27,15 @@ typedef enum e_bool
 	false,
 	true
 }			t_bool;
+
+typedef enum e_status
+{
+	picking_fork,
+	eating,
+	sleeping,
+	thinking,
+	dead
+}				t_status;
 
 typedef struct s_args
 {
@@ -61,23 +72,20 @@ typedef struct s_dinner
 	pthread_mutex_t	std_out;
 }				t_dinner;
 
-typedef enum e_status
+typedef struct s_philoargs
 {
-	picking_fork,
-	eating,
-	sleeping,
-	thinking,
-	dead
-}				t_status;
+	t_dinner	dinner;
+	int			philo_num;
+}				t_philoargs;
 
 int		ft_parse_args(int argc, char **argv, t_args *args);
-int		ft_init(t_dinner *dinner);
+int		ft_init(t_philoargs *philoargs);
 int		ft_get_current_time(void);
 void	*ft_philo(void *ptr);
 int		ft_eat(t_dinner *dinner, t_philo *philo);
 void	ft_sleep(t_dinner *dinner, t_philo *philo);
 void	ft_think(t_dinner *dinner, t_philo *philo);
-int		ft_pickup_fork(t_dinner *dinner, t_philo *philo);
+int		ft_pickup_forks(t_dinner *dinner, t_philo *philo);
 void	ft_drop_forks(t_dinner *dinner, t_philo *philo);
 void	ft_print_status(t_philo	*philo, pthread_mutex_t *std_out);
 void	*ft_dispatcher(void *ptr);
