@@ -6,12 +6,12 @@
 #    By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/26 12:02:18 by fvizcaya          #+#    #+#              #
-#    Updated: 2024/12/30 00:21:22 by fvizcaya         ###   ########.fr        #
+#    Updated: 2025/01/07 19:21:15 by fvizcaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -lpthread -I . 
+CFLAGS = -Wall -Wextra -Werror -lpthread -I . -g3
 
 NAME = philo
 SRC_DIR = src/

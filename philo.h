@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 11:18:22 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/29 22:19:19 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/01/07 21:05:14 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <stdio.h>
+# include <unistd.h>
 # include <pthread.h>
 # include <limits.h>                 
 # include <sys/time.h>
@@ -52,6 +53,7 @@ typedef struct s_philo
 	pthread_mutex_t	philo_mutex;
 	int				id;
 	pthread_t		thread;
+	int				action_timer;
 	int				last_meal_time;
 	int				num_meals;
 	t_bool			dead;
@@ -61,7 +63,6 @@ typedef struct s_philo
 
 typedef struct s_dinner
 {
-	int 			num_philos;
 	int				*forks;
 	t_args			args;
 	t_philo			*philos;

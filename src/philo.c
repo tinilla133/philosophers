@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 17:28:50 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/29 22:23:53 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/01/07 20:45:36 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_is_dead(t_dinner *dinner)
 	int	i;
 
 	i = 0;
-	while (i < dinner->num_philos)
+	while (i < dinner->args.num_philos)
 	{
 		if (dinner->philos[i].status == dead)
 			return (1);
@@ -60,16 +60,17 @@ void	*ft_philo(void *ptr)
 	*/
 	while (true)
 	{
+		// printf("Pasa 1 id: %d\n", args->philo_num);
 		ft_think(&args->dinner, &args->dinner.philos[i]);
+		// printf("Pasa 2 id: %d\n", args->philo_num);
 		if (!ft_pickup_forks(&args->dinner, &args->dinner.philos[i]))
 		{
-			if (!ft_eat(&args->dinner, &args->dinner.philos[i]))
-			{
-				ft_drop_forks(&args->dinner, &args->dinner.philos[i]);
-				ft_sleep(&args->dinner, &args->dinner.philos[i]);
-			}
+			// printf("Pasa 3 id: %d\n", args->philo_num);
+			ft_eat(&args->dinner, &args->dinner.philos[i]);
+			ft_drop_forks(&args->dinner, &args->dinner.philos[i]);
+			ft_sleep(&args->dinner, &args->dinner.philos[i]);
 		}
-		return (NULL);
 	}
+	return (NULL);
 }
 

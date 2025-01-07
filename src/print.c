@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:56:27 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/24 16:00:47 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/01/07 20:35:49 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ static void	ft_strcpy(const char *src, char *dst, int len)
 	while (src[i] && i < len)
 	{
 		dst[i] = src[i];
+		i++;
 	}
+	dst[i] = '\0';
 }
 
 void	ft_print_status(t_philo	*philo, pthread_mutex_t *std_out)
@@ -28,7 +30,7 @@ void	ft_print_status(t_philo	*philo, pthread_mutex_t *std_out)
 	char	status[16];
 
 	if (philo->status == picking_fork)
-		ft_strcpy("is taking a fork", status, 16);
+		ft_strcpy("has taken a fork", status, 16);
 	if (philo->status == eating)
 		ft_strcpy("is eating", status, 16);
 	else if (philo->status == sleeping)

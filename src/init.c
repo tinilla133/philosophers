@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:37:17 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/29 22:21:24 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/01/07 20:55:53 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	ft_init_forks(t_dinner *dinner)
 	int	i;
 
 	i = 0;
-	while (i < (dinner->num_philos - 1))
+	while (i < (dinner->args.num_philos - 1))
 		dinner->forks[i++] = 0;
 }
 
@@ -38,7 +38,7 @@ static void	ft_init_philos(t_dinner *dinner)
 	int	i;
 
 	i = 0;
-	while (i < dinner->num_philos)
+	while (i < dinner->args.num_philos)
 	{
 		dinner->philos[i].id = i + 1;
 		dinner->philos[i].dead = false;
@@ -55,16 +55,18 @@ static void	ft_create_threads(t_philoargs *args)
 {
 	int	i;
 
+	pthread_create(&args->dinner.dispatcher, NULL, ft_dispatcher, \
+					&args->dinner);
 	i = 0;
 	while (i < args->dinner.args.num_philos)
 	{
 		args->philo_num = i;
 		pthread_create(&args->dinner.philos[i].thread, \
 						NULL, ft_philo, args);
+		usleep(20000);
 		i++;
 	}
-	pthread_create(&args->dinner.dispatcher, NULL, ft_dispatcher, \
-					&args->dinner);
+	printf("Retornamos de ft_create_threads()\n");
 }
 
 int	ft_init(t_philoargs *args)

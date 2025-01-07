@@ -6,15 +6,23 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:51:52 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/29 22:26:36 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/01/07 19:44:54 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+void	ft_inint_args(t_args *args)
+{
+	args->num_philos = 0;
+	args->time_to_die = 0;
+	args->time_to_eat = 0;
+	args->time_to_sleep = 0;
+	args->times_must_eat = 0;
+}
+
 int	main(int argc, char **argv)
 {
-	
 	/*
 	Parsear.
 	Inicializar valores.
@@ -23,6 +31,7 @@ int	main(int argc, char **argv)
 	*/
 	t_philoargs	philoargs;
 
+	ft_inint_args(&philoargs.dinner.args);
 	if (ft_parse_args(argc, argv, &philoargs.dinner.args) == -1)
 	{
 		printf("Arguments error.\n");

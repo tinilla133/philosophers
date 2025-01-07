@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 14:41:58 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/23 17:26:20 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/01/07 20:38:34 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,5 @@ inline int	ft_get_current_time(void)
 	struct timeval	curr_time;
 
 	gettimeofday(&curr_time, NULL);
-	return ((int) curr_time.tv_usec / 1000);
+	return ((int) curr_time.tv_sec + (curr_time.tv_usec / 1000));
 }

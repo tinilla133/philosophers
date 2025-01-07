@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 19:20:17 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/29 22:19:54 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/01/07 20:57:15 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_bool	ft_end_of_dinner(t_dinner *dinner)
 	i = 0;
 	curr_time = ft_get_current_time();
 	pthread_mutex_lock(&dinner->mutex_dispatcher);
-	while (i < dinner->num_philos)
+	while (i < dinner->args.num_philos)
 	{
 		if ((curr_time - dinner->philos[i].last_meal_time) > \
 			dinner->args.time_to_die)
@@ -43,6 +43,7 @@ void	*ft_dispatcher(void *ptr)
 	end_of_dinner = false;
 	while (!end_of_dinner)
 		end_of_dinner = ft_end_of_dinner(dinner);
+	ft_stop_dinner(dinner);
 	return (NULL);
 }
 

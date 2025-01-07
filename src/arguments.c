@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 11:23:06 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/30 00:14:56 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/01/07 19:39:49 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,18 @@ static int	ft_strlen(char *str)
 
 static int	ft_valid_characters(char **argv)
 {
-	while (*(++argv))
+	int	i;
+	int	j;
+
+	i = 0;
+	while (argv[++i])
 	{
-		while (**argv)
+		j = 0;
+		while (argv[i][j])
 		{
-			if (**argv < '0' || **argv > '9')
+			if (argv[i][j] < '0' || argv[i][j] > '9')
 				return (-1);
-			(*argv)++;
+			j++;
 		}
 	}
 	return (0);
@@ -87,11 +92,10 @@ int	ft_parse_args(int argc, char **argv, t_args *args)
 	else
 		args->times_must_eat = -1;
 	// OJO: Número mínimo de filósofos
-	if (args->num_philos > INT_MAX || \
-		args->time_to_die > INT_MAX || args->time_to_die < 1 || \
-		args->time_to_eat > INT_MAX || args->time_to_eat < 1 || \
-		args->time_to_sleep > INT_MAX || args->time_to_sleep < 1 || \
-		args->times_must_eat > INT_MAX)
+	if (args->num_philos > INT_MAX || args->time_to_die > INT_MAX || \
+		args->time_to_die < 1 || args->time_to_eat > INT_MAX || \
+		args->time_to_eat < 1 || args->time_to_sleep > INT_MAX || \
+		args->time_to_sleep < 1 || args->times_must_eat > INT_MAX)
 		return (-1);
 	return (0);
 }

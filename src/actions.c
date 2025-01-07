@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 13:43:31 by fvizcaya          #+#    #+#             */
-/*   Updated: 2024/12/30 00:20:17 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/01/07 21:07:12 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,16 @@
 
 int	ft_eat(t_dinner *dinner, t_philo *philo)
 {
-	int	aux_timer;
 	int	init_timer;
-	int	timer;
 
 	if (!philo->l_fork || !philo->r_fork)
 		return (-1);
 	philo->status = eating;
-	aux_timer = 0;
+	philo->action_timer = 0;
 	init_timer = ft_get_current_time();
-	timer = init_timer;
 	ft_print_status(philo, &dinner->std_out);
-	while (aux_timer <= timer - init_timer)
-		aux_timer++;
+	while (philo->action_timer - init_timer <= dinner->args.time_to_eat)
+		philo->action_timer = ft_get_current_time();
 	philo->num_meals++;
 	philo->last_meal_time = ft_get_current_time();
 	return (0);
@@ -34,17 +31,14 @@ int	ft_eat(t_dinner *dinner, t_philo *philo)
 
 void	ft_sleep(t_dinner *dinner, t_philo *philo)
 {
-	int	aux_timer;
 	int	init_timer;
-	int	timer;
 
 	philo->status = sleeping;
-	aux_timer = 0;
+	philo->action_timer = 0;
 	init_timer = ft_get_current_time();
-	timer = init_timer;
 	ft_print_status(philo, &dinner->std_out);
-	while (aux_timer <= timer - init_timer)
-		aux_timer++;
+	while (philo->action_timer - init_timer <= dinner->args.time_to_sleep)
+		philo->action_timer++;
 	ft_think(dinner, philo);
 }
 
