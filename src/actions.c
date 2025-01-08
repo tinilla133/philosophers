@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 13:43:31 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/01/07 21:07:12 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/01/08 19:06:22 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	ft_sleep(t_dinner *dinner, t_philo *philo)
 
 void	ft_think(t_dinner *dinner, t_philo *philo)
 {
+	if (philo->status != thinking)
+		ft_print_status(philo, &dinner->std_out);
 	philo->status = thinking;
-	ft_print_status(philo, &dinner->std_out);
 }

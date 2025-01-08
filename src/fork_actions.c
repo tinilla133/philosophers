@@ -6,52 +6,67 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 16:53:22 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/01/07 20:51:31 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/01/08 19:27:25 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static t_bool	ft_forks_free(t_dinner *dinner, t_philo *philo)
+static t_bool	ft_l_fork_free(t_dinner *dinner, t_philo *philo)
 {
-	int	r_fork_num;
-	int l_fork_num;
+	int 	l_fork_num;
+	t_bool	ret;
 
-	if (philo->id == dinner->args.num_philos + 1)
-		r_fork_num = 0;
-	else
-		r_fork_num = philo->id;
+	ret = false;
 	l_fork_num = philo->id - 1;
 	pthread_mutex_lock(&dinner->mutex_forks);
-	if (dinner->forks[r_fork_num] || dinner->forks[l_fork_num])
-	{
-		pthread_mutex_unlock(&dinner->mutex_forks);
-		return (false);
-	}
-	pthread_mutex_unlock(&dinner->mutex_forks);
-	return (true);
+	if (!dinner->forks[l_fork_num])
+		ret = true;
+	return (ret);
 }
 
-int	ft_pickup_forks(t_dinner *dinner, t_philo *philo)
+static t_bool	ft_r_fork_free(t_dinner *dinner, t_philo *philo)
 {
-	int	r_fork_num;
-	int l_fork_num;
+	int 	r_fork_num;
+	t_bool	ret;
 
-	if (!ft_forks_free(dinner, philo))
-		return (-1);
-	if (philo->id == dinner->args.num_philos)
-		r_fork_num = 0;
-	else
-		r_fork_num = philo->id;
-	l_fork_num = philo->id - 1;
+	ret = false;
+	r_fork_num = philo->id;
 	pthread_mutex_lock(&dinner->mutex_forks);
-	philo->status = picking_fork;
-	ft_print_status(philo, &dinner->std_out);
-	philo->l_fork = true;
-	dinner->forks[l_fork_num] = true;
-	philo->r_fork = true;
-	dinner->forks[r_fork_num] = true;
-	pthread_mutex_unlock(&dinner->mutex_forks);
+	if (!dinner->forks[r_fork_num])
+		ret = true;
+	return (ret);
+}
+
+int	ft_pickup_l_fork(t_dinner *dinner, t_philo *philo)
+{
+	int 	l_fork_num;
+
+	l_fork_num = philo->id - 1;
+	if (ft_l_fork_free(dinner, philo))
+	{
+		philo->status = picking_fork;
+		pthread_mutex_lock(&dinner->mutex_forks);
+		dinner->forks[l_fork_num] = true;
+		philo->l_fork = true;
+		pthread_mutex_unlock(&dinner->mutex_forks);
+	}
+	return (0);
+}
+
+int	ft_pickup_r_fork(t_dinner *dinner, t_philo *philo)
+{
+	int 	r_fork_num;
+
+	r_fork_num = philo->id - 1;
+	if (ft_r_fork_free(dinner, philo))
+	{
+		philo->status = picking_fork;
+		pthread_mutex_lock(&dinner->mutex_forks);
+		dinner->forks[r_fork_num] = true;
+		philo->l_fork = true;
+		pthread_mutex_unlock(&dinner->mutex_forks);
+	}
 	return (0);
 }
 
