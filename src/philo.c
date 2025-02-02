@@ -60,17 +60,22 @@ void	*ft_philo(void *ptr)
 	*/
 	while (true)
 	{
+		printf("¡Hola!, soy el philo %d\n", i);
 		ft_think(&args->dinner, &args->dinner.philos[i]);
-		if (!args->dinner.philos[i].l_fork)
-			ft_pickup_l_fork(&args->dinner, &args->dinner.philos[i]);
-		if (!args->dinner.philos[i].r_fork)
-			ft_pickup_r_fork(&args->dinner, &args->dinner.philos[i]);
-		if (args->dinner.philos[i].l_fork && args->dinner.philos[i].l_fork)
+		//if (!args->dinner.philos[i].l_fork)
+		ft_pickup_l_fork(&args->dinner, &args->dinner.philos[i]);
+		//if (!args->dinner.philos[i].r_fork)
+		ft_pickup_r_fork(&args->dinner, &args->dinner.philos[i]);
+		/* if (args->dinner.philos[i].l_fork && args->dinner.philos[i].l_fork)
 		{
 			ft_eat(&args->dinner, &args->dinner.philos[i]);
 			ft_drop_forks(&args->dinner, &args->dinner.philos[i]);
 			ft_sleep(&args->dinner, &args->dinner.philos[i]);
 		}
+		*/
+		ft_eat(&args->dinner, &args->dinner.philos[i]);
+		ft_drop_forks(&args->dinner, &args->dinner.philos[i]);
+		ft_sleep(&args->dinner, &args->dinner.philos[i]);
 	}
 	return (NULL);
 }

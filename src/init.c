@@ -14,16 +14,18 @@
 
 static int	ft_alloc_data_structs(t_args args, t_dinner *dinner)
 {
-	dinner->forks = (int *) malloc ((args.num_philos + 1) * sizeof (int));
+	dinner->forks = (pthread_mutex_t *) malloc ((args.num_philos) * \
+		sizeof (pthread_mutex_t));
 	if (!dinner->forks)
 		return (-1);
-	dinner->philos = (t_philo *) malloc ((args.num_philos + 1) * \
+	dinner->philos = (t_philo *) malloc ((args.num_philos) * \
 					sizeof (t_philo));
 	if (!dinner->philos)
 		return (-1);
 	return (0);
 }
 
+/*
 static void	ft_init_forks(t_dinner *dinner)
 {
 	int	i;
@@ -32,6 +34,7 @@ static void	ft_init_forks(t_dinner *dinner)
 	while (i < (dinner->args.num_philos - 1))
 		dinner->forks[i++] = 0;
 }
+*/
 
 static void	ft_init_philos(t_dinner *dinner)
 {
@@ -73,7 +76,7 @@ int	ft_init(t_philoargs *args)
 {
 	if (ft_alloc_data_structs(args->dinner.args, &args->dinner) == -1)
 		return (-1);
-	ft_init_forks(&args->dinner);
+	//ft_init_forks(&args->dinner);
 	ft_init_philos(&args->dinner);
 	ft_create_threads(args);
 	return (0);

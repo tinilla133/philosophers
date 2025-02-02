@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "philo.h"
-
+ /*
 static t_bool	ft_l_fork_free(t_dinner *dinner, t_philo *philo)
 {
 	int 	l_fork_num;
@@ -19,7 +19,7 @@ static t_bool	ft_l_fork_free(t_dinner *dinner, t_philo *philo)
 
 	ret = false;
 	l_fork_num = philo->id - 1;
-	pthread_mutex_lock(&dinner->mutex_forks);
+	pthread_mutex_lock(&dinner->forks[l_fork_num]);
 	if (!dinner->forks[l_fork_num])
 		ret = true;
 	return (ret);
@@ -37,20 +37,35 @@ static t_bool	ft_r_fork_free(t_dinner *dinner, t_philo *philo)
 		ret = true;
 	return (ret);
 }
+*/
+static void	ft_get_for_number(int *left, int *right, t_dinner *dinner, t_philo *philo)
+{
+	*left = philo->id;
+	*right = (philo->id + 1) % dinner->args.num_philos;
+	if (philo->id % 2)
+	{
+		*left = (philo->id + 1) % dinner->args.num_philos;
+		*right = philo->id;
+	}
+}
 
+int	ft_pickup_forks(t_dinner *dinner, t_philo *philo)
+{
+	int	l_fork_num;
+	int	r_fork_num;
+
+	l_fork_num = 0;
+	r_fork_num = 0;
+	ft_get_for_number(&l_fork_num, &r_fork_num);
+}
 int	ft_pickup_l_fork(t_dinner *dinner, t_philo *philo)
 {
-	int 	l_fork_num;
+	int	l_fork_num;
 
 	l_fork_num = philo->id - 1;
-	if (ft_l_fork_free(dinner, philo))
-	{
-		philo->status = picking_fork;
-		pthread_mutex_lock(&dinner->mutex_forks);
-		dinner->forks[l_fork_num] = true;
-		philo->l_fork = true;
-		pthread_mutex_unlock(&dinner->mutex_forks);
-	}
+	pthread_mutex_lock(&dinner->forks[l_fork_num]);
+	printf("Soy el philo %d y acabo de coger el tenedor izquierdo.\n", philo->id);
+	philo->l_fork = true;
 	return (0);
 }
 
@@ -59,14 +74,8 @@ int	ft_pickup_r_fork(t_dinner *dinner, t_philo *philo)
 	int 	r_fork_num;
 
 	r_fork_num = philo->id - 1;
-	if (ft_r_fork_free(dinner, philo))
-	{
-		philo->status = picking_fork;
-		pthread_mutex_lock(&dinner->mutex_forks);
-		dinner->forks[r_fork_num] = true;
-		philo->l_fork = true;
-		pthread_mutex_unlock(&dinner->mutex_forks);
-	}
+	pthread_mutex_lock(&dinner->forks[r_fork_num]);
+	philo->r_fork = true;
 	return (0);
 }
 
@@ -78,10 +87,9 @@ void	ft_drop_forks(t_dinner *dinner, t_philo *philo)
 		r_fork_num = 0;
 	else
 		r_fork_num = philo->id;
-	pthread_mutex_lock(&dinner->mutex_forks);
-	dinner->forks[r_fork_num - 1] = false;
-	dinner->forks[r_fork_num] = false;
+	pthread_mutex_unlock(&dinner->forks[r_fork_num - 1]);
 	philo->l_fork = false;
+	pthread_mutex_unlock(&dinner->forks[r_fork_num]);
 	philo->r_fork = false;
-	pthread_mutex_unlock(&dinner->mutex_forks);
 }
+

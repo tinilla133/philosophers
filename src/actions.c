@@ -22,10 +22,12 @@ int	ft_eat(t_dinner *dinner, t_philo *philo)
 	philo->action_timer = 0;
 	init_timer = ft_get_current_time();
 	ft_print_status(philo, &dinner->std_out);
+	pthread_mutex_lock(&philo->mutex_timer);
 	while (philo->action_timer - init_timer <= dinner->args.time_to_eat)
 		philo->action_timer = ft_get_current_time();
 	philo->num_meals++;
 	philo->last_meal_time = ft_get_current_time();
+	pthread_mutex_unlock(&philo->mutex_timer);
 	return (0);
 }
 

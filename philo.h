@@ -53,6 +53,7 @@ typedef struct s_philo
 	pthread_mutex_t	philo_mutex;
 	int				id;
 	pthread_t		thread;
+	pthread_mutex_t mutex_timer;
 	int				action_timer;
 	int				last_meal_time;
 	int				num_meals;
@@ -63,13 +64,12 @@ typedef struct s_philo
 
 typedef struct s_dinner
 {
-	int				*forks;
+	pthread_mutex_t	*forks;
 	t_args			args;
 	t_philo			*philos;
 	int				prioritary;
 	pthread_t		dispatcher;
 	pthread_mutex_t	mutex_dispatcher;
-	pthread_mutex_t	mutex_forks;
 	pthread_mutex_t	std_out;
 }				t_dinner;
 
