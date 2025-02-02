@@ -63,9 +63,8 @@ void	*ft_philo(void *ptr)
 		printf("¡Hola!, soy el philo %d\n", i);
 		ft_think(&args->dinner, &args->dinner.philos[i]);
 		//if (!args->dinner.philos[i].l_fork)
-		ft_pickup_l_fork(&args->dinner, &args->dinner.philos[i]);
+		ft_pickup_forks(&args->dinner, &args->dinner.philos[i]);
 		//if (!args->dinner.philos[i].r_fork)
-		ft_pickup_r_fork(&args->dinner, &args->dinner.philos[i]);
 		/* if (args->dinner.philos[i].l_fork && args->dinner.philos[i].l_fork)
 		{
 			ft_eat(&args->dinner, &args->dinner.philos[i]);
