@@ -6,11 +6,11 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:51:52 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/01/07 19:44:54 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/02/05 20:53:27 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include <philo.h>
 
 void	ft_inint_args(t_args *args)
 {

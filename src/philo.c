@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 17:28:50 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/01/08 19:25:22 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/02/05 21:19:21 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,7 @@ void	*ft_philo(void *ptr)
 	{
 		printf("¡Hola!, soy el philo %d\n", i);
 		ft_think(&args->dinner, &args->dinner.philos[i]);
-		//if (!args->dinner.philos[i].l_fork)
 		ft_pickup_forks(&args->dinner, &args->dinner.philos[i]);
-		//if (!args->dinner.philos[i].r_fork)
-		/* if (args->dinner.philos[i].l_fork && args->dinner.philos[i].l_fork)
-		{
-			ft_eat(&args->dinner, &args->dinner.philos[i]);
-			ft_drop_forks(&args->dinner, &args->dinner.philos[i]);
-			ft_sleep(&args->dinner, &args->dinner.philos[i]);
-		}
-		*/
 		ft_eat(&args->dinner, &args->dinner.philos[i]);
 		ft_drop_forks(&args->dinner, &args->dinner.philos[i]);
 		ft_sleep(&args->dinner, &args->dinner.philos[i]);

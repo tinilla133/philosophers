@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:37:17 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/01/07 20:55:53 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/02/05 21:18:40 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,14 @@ static int	ft_alloc_data_structs(t_args args, t_dinner *dinner)
 	return (0);
 }
 
-/*
 static void	ft_init_forks(t_dinner *dinner)
 {
 	int	i;
 
 	i = 0;
 	while (i < (dinner->args.num_philos - 1))
-		dinner->forks[i++] = 0;
+		pthread_mutex_init(&dinner->forks[i++], NULL);
 }
-*/
 
 static void	ft_init_philos(t_dinner *dinner)
 {
@@ -43,7 +41,7 @@ static void	ft_init_philos(t_dinner *dinner)
 	i = 0;
 	while (i < dinner->args.num_philos)
 	{
-		dinner->philos[i].id = i + 1;
+		dinner->philos[i].id = i;
 		dinner->philos[i].dead = false;
 		dinner->philos[i].last_meal_time = ft_get_current_time();
 		dinner->philos[i].l_fork = false;
@@ -76,7 +74,7 @@ int	ft_init(t_philoargs *args)
 {
 	if (ft_alloc_data_structs(args->dinner.args, &args->dinner) == -1)
 		return (-1);
-	//ft_init_forks(&args->dinner);
+	ft_init_forks(&args->dinner);
 	ft_init_philos(&args->dinner);
 	ft_create_threads(args);
 	return (0);
