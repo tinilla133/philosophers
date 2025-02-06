@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 11:18:22 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/01/08 19:22:01 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/02/06 20:53:38 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ typedef struct s_philo
 	int				action_timer;
 	int				last_meal_time;
 	int				num_meals;
+	int				l_fork;
+	int				r_fork;
 	t_bool			dead;
-	t_bool			l_fork;
-	t_bool			r_fork;
 }				t_philo;
 
 typedef struct s_dinner

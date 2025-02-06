@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 17:28:50 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/02/05 21:19:21 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/02/06 21:19:00 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,14 @@ void	*ft_philo(void *ptr)
 	No hay ninguna condición de orden ni de tiempo en el subject para pensar, por tanto, 
 	consideramos que cuando un filósofo no está comiendo ni durmiendo, está pensando.
 	*/
+
 	while (true)
 	{
 		printf("¡Hola!, soy el philo %d\n", i);
 		ft_think(&args->dinner, &args->dinner.philos[i]);
 		ft_pickup_forks(&args->dinner, &args->dinner.philos[i]);
 		ft_eat(&args->dinner, &args->dinner.philos[i]);
-		ft_drop_forks(&args->dinner, &args->dinner.philos[i]);
+		// ft_drop_forks(&args->dinner, &args->dinner.philos[i]);
 		ft_sleep(&args->dinner, &args->dinner.philos[i]);
 	}
 	return (NULL);

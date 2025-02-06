@@ -6,12 +6,12 @@
 #    By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/26 12:02:18 by fvizcaya          #+#    #+#              #
-#    Updated: 2025/02/05 20:53:20 by fvizcaya         ###   ########.fr        #
+#    Updated: 2025/02/06 20:56:33 by fvizcaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -lpthread -I . -g3
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -I .
 
 NAME = philo
 SRC_DIR = src/
@@ -32,7 +32,7 @@ OBJ	= $(__SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -lpthread -o $(NAME)
 
 clean:
 	rm -rf $(SRC_DIR)*.o

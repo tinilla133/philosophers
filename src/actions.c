@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 13:43:31 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/02/05 20:29:41 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/02/06 21:05:49 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,22 @@ int	ft_eat(t_dinner *dinner, t_philo *philo)
 {
 	int	init_timer;
 
-	if (!philo->l_fork || !philo->r_fork)
-		return (-1);
-	philo->status = eating;
+	// philo->status = eating; 
+	printf("Entra\n");
+	pthread_mutex_lock(&philo->mutex_timer);
 	philo->action_timer = 0;
 	init_timer = ft_get_current_time();
 	ft_print_status(philo, &dinner->std_out);
-	pthread_mutex_lock(&philo->mutex_timer);
 	while (philo->action_timer - init_timer <= dinner->args.time_to_eat)
 		philo->action_timer = ft_get_current_time();
+	printf("come\n");
 	philo->num_meals++;
 	philo->last_meal_time = ft_get_current_time();
 	pthread_mutex_unlock(&philo->mutex_timer);
+	pthread_mutex_unlock(&dinner->forks[philo->l_fork]);
+	printf("Soy el philo %d y acabo de soltar el tenedor izquierdo.\n", philo->id);
+	pthread_mutex_unlock(&dinner->forks[philo->r_fork]);
+	printf("Soy el philo %d y acabo de coger el tenedor derecho.\n", philo->id);
 	return (0);
 }
 
@@ -36,11 +40,13 @@ void	ft_sleep(t_dinner *dinner, t_philo *philo)
 	int	init_timer;
 
 	philo->status = sleeping;
+	pthread_mutex_lock(&philo->mutex_timer);
 	philo->action_timer = 0;
 	init_timer = ft_get_current_time();
 	ft_print_status(philo, &dinner->std_out);
 	while (philo->action_timer - init_timer <= dinner->args.time_to_sleep)
 		philo->action_timer++;
+	pthread_mutex_unlock(&philo->mutex_timer);
 	ft_think(dinner, philo);
 }
 

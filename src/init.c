@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:37:17 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/02/05 21:18:40 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/02/06 21:19:28 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,19 @@ static void	ft_init_forks(t_dinner *dinner)
 		pthread_mutex_init(&dinner->forks[i++], NULL);
 }
 
+static void	ft_get_fork_number(t_dinner *dinner, t_philo *philo)
+{
+	if (!(philo->id % 2))
+	{
+		philo->l_fork = philo->id;
+		philo->r_fork = (philo->id + 1) % dinner->args.num_philos;
+	}
+	else
+	{
+		philo->l_fork = (philo->id + 1) % dinner->args.num_philos;
+		philo->r_fork = philo->id;
+	}
+}
 static void	ft_init_philos(t_dinner *dinner)
 {
 	int	i;
@@ -44,10 +57,9 @@ static void	ft_init_philos(t_dinner *dinner)
 		dinner->philos[i].id = i;
 		dinner->philos[i].dead = false;
 		dinner->philos[i].last_meal_time = ft_get_current_time();
-		dinner->philos[i].l_fork = false;
-		dinner->philos[i].r_fork = false;
 		dinner->philos[i].num_meals = 0;
 		dinner->philos[i].status = thinking;
+		ft_get_fork_number(dinner, &dinner->philos[i]);
 		i++;
 	}
 }
@@ -61,10 +73,11 @@ static void	ft_create_threads(t_philoargs *args)
 	i = 0;
 	while (i < args->dinner.args.num_philos)
 	{
+		printf("Num philos: %d\n", args->dinner.args.num_philos);
 		args->philo_num = i;
 		pthread_create(&args->dinner.philos[i].thread, \
 						NULL, ft_philo, args);
-		usleep(20000);
+		// usleep(20000);
 		i++;
 	}
 	printf("Retornamos de ft_create_threads()\n");
