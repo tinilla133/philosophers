@@ -34,12 +34,12 @@ static void	ft_init_forks(t_dinner *dinner)
 		pthread_mutex_init(&dinner->forks[i++], NULL);
 }
 
-static void	ft_get_fork_number(t_dinner *dinner, t_philo *philo)
+static void	ft_get_fork_number(const t_dinner *dinner, t_philo *philo)
 {
 	if (!(philo->id % 2))
 	{
-		philo->l_fork = philo->id;
 		philo->r_fork = (philo->id + 1) % dinner->args.num_philos;
+		philo->l_fork = philo->id;
 	}
 	else
 	{
@@ -47,6 +47,8 @@ static void	ft_get_fork_number(t_dinner *dinner, t_philo *philo)
 		philo->r_fork = philo->id;
 	}
 }
+
+
 static void	ft_init_philos(t_dinner *dinner)
 {
 	int	i;
@@ -58,8 +60,8 @@ static void	ft_init_philos(t_dinner *dinner)
 		dinner->philos[i].dead = false;
 		dinner->philos[i].last_meal_time = ft_get_current_time();
 		dinner->philos[i].num_meals = 0;
-		dinner->philos[i].status = thinking;
-		ft_get_fork_number(dinner, &dinner->philos[i]);
+		// dinner->philos[i].status = thinking;
+		ft_get_fork_number((const t_dinner *) dinner, &dinner->philos[i]);
 		i++;
 	}
 }
@@ -77,7 +79,6 @@ static void	ft_create_threads(t_philoargs *args)
 		args->philo_num = i;
 		pthread_create(&args->dinner.philos[i].thread, \
 						NULL, ft_philo, args);
-		// usleep(20000);
 		i++;
 	}
 	printf("Retornamos de ft_create_threads()\n");
@@ -87,8 +88,11 @@ int	ft_init(t_philoargs *args)
 {
 	if (ft_alloc_data_structs(args->dinner.args, &args->dinner) == -1)
 		return (-1);
+	args->dinner.took_last_meal = args->philo_num;
 	ft_init_forks(&args->dinner);
 	ft_init_philos(&args->dinner);
+	pthread_mutex_init(&args->dinner.mutex_dinner, NULL);
+	pthread_mutex_init(&args->dinner.mutex_dispatcher, NULL);
 	ft_create_threads(args);
 	return (0);
 }

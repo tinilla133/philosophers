@@ -58,15 +58,17 @@ void	*ft_philo(void *ptr)
 	No hay ninguna condición de orden ni de tiempo en el subject para pensar, por tanto, 
 	consideramos que cuando un filósofo no está comiendo ni durmiendo, está pensando.
 	*/
-
+	usleep(1000);
+	if (!(args->philo_num % 2))
+		ft_think(&args->dinner, &args->dinner.philos[i]);
 	while (true)
 	{
-		printf("¡Hola!, soy el philo %d\n", i);
-		ft_think(&args->dinner, &args->dinner.philos[i]);
+		// printf("¡Hola!, soy el philo %d\n", i);
 		ft_pickup_forks(&args->dinner, &args->dinner.philos[i]);
 		ft_eat(&args->dinner, &args->dinner.philos[i]);
 		// ft_drop_forks(&args->dinner, &args->dinner.philos[i]);
 		ft_sleep(&args->dinner, &args->dinner.philos[i]);
+		ft_think(&args->dinner, &args->dinner.philos[i]);
 	}
 	return (NULL);
 }

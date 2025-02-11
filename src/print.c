@@ -40,6 +40,7 @@ void	ft_print_status(t_philo	*philo, pthread_mutex_t *std_out)
 	else if (philo->status == dead)
 		ft_strcpy("died", status, 16);
 	pthread_mutex_lock(std_out);
-	printf("%i  %d %s\n", ft_get_current_time(), philo->id, status);
+	printf("%d %d %s\n", ft_get_current_time(), philo->id + 1, status);
+	usleep(500000);
 	pthread_mutex_unlock(std_out);
 }

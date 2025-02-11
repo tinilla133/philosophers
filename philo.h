@@ -67,9 +67,10 @@ typedef struct s_dinner
 	pthread_mutex_t	*forks;
 	t_args			args;
 	t_philo			*philos;
-	int				prioritary;
+	int				took_last_meal;
 	pthread_t		dispatcher;
 	pthread_mutex_t	mutex_dispatcher;
+	pthread_mutex_t	mutex_dinner;
 	pthread_mutex_t	std_out;
 }				t_dinner;
 
