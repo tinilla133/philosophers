@@ -44,15 +44,16 @@ t_bool	ft_end_of_dinner(t_dinner *dinner)
 void	*ft_dispatcher(void *ptr)
 {
 	t_dinner	*dinner;
-	t_bool		end_of_dinner;
 
 	dinner = (t_dinner *) ptr;
-	end_of_dinner = false;
 	pthread_mutex_lock(&dinner->mutex_dispatcher);
-	while (!end_of_dinner)
+	while (!dinner->end_of_dinner)
 	{
+		pthread_mutex_lock(&dinner->std_out);
 		printf("====> Hilo dispatcher <====\n");
-		end_of_dinner = ft_end_of_dinner(dinner);
+		pthread_mutex_unlock(&dinner->std_out);
+		dinner->end_of_dinner = ft_end_of_dinner(dinner);
+		printf("end_of_dinner =====> %d\n", dinner->end_of_dinner);
 	}
 	pthread_mutex_unlock(&dinner->mutex_dispatcher);
 	ft_stop_dinner(dinner);
@@ -63,11 +64,15 @@ void	ft_stop_dinner(t_dinner *dinner)
 {
 	int	i;
 
+	pthread_mutex_lock(&dinner->std_out);
+	printf("========> Entramos en ft_stop_dinner()\n");
+	pthread_mutex_unlock(&dinner->std_out);
+
 	i = 0;
 	while (i < dinner->args.num_philos)
 	{
 		pthread_mutex_destroy(&dinner->forks[i]);
-		//pthread_join(dinner->philos[i++].thread, NULL);
+		pthread_join(dinner->philos[i++].thread, NULL);
 	}
 	pthread_mutex_destroy(&dinner->mutex_dinner);
 	pthread_mutex_destroy(&dinner->mutex_dispatcher);

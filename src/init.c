@@ -89,6 +89,7 @@ int	ft_init(t_philoargs *args)
 	if (ft_alloc_data_structs(args->dinner.args, &args->dinner) == -1)
 		return (-1);
 	args->dinner.took_last_meal = args->philo_num;
+	args->dinner.end_of_dinner = false;
 	ft_init_forks(&args->dinner);
 	ft_init_philos(&args->dinner);
 	pthread_mutex_init(&args->dinner.mutex_dinner, NULL);

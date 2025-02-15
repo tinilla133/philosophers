@@ -68,6 +68,7 @@ typedef struct s_dinner
 	t_args			args;
 	t_philo			*philos;
 	int				took_last_meal;
+	t_bool			end_of_dinner;
 	pthread_t		dispatcher;
 	pthread_mutex_t	mutex_dispatcher;
 	pthread_mutex_t	mutex_dinner;
