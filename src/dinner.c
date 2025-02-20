@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: fvizcaya42 <fvizcaya42@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 19:20:17 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/01/07 20:57:15 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/02/20 20:36:45 by fvizcaya42       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ t_bool	ft_end_of_dinner(t_dinner *dinner)
 
 	i = 0;
 	ret = false;
-	pthread_mutex_lock(&dinner->mutex_dispatcher);
 	while (i < dinner->args.num_philos)
 	{
 		curr_time = ft_get_current_time();
 		pthread_mutex_lock(&dinner->std_out);
 		printf("Tiempo sin comer del philo %d: %d\n", i + 1, curr_time - dinner->philos[i].last_meal_time);
 		pthread_mutex_unlock(&dinner->std_out);
+		pthread_mutex_lock(&dinner->mutex_dispatcher);
 		if ((curr_time - dinner->philos[i].last_meal_time) > \
 			dinner->args.time_to_die)
 		{
@@ -35,9 +35,9 @@ t_bool	ft_end_of_dinner(t_dinner *dinner)
 		}
 		if (dinner->philos[i].num_meals == dinner->args.times_must_eat)
 			ret = true;
+		pthread_mutex_unlock(&dinner->mutex_dispatcher);
 		i++;
 	}
-	pthread_mutex_unlock(&dinner->mutex_dispatcher);
 	return (ret);
 }
 
@@ -51,9 +51,9 @@ void	*ft_dispatcher(void *ptr)
 	{
 		pthread_mutex_lock(&dinner->std_out);
 		printf("====> Hilo dispatcher <====\n");
+		printf("end_of_dinner =====> %d\n", dinner->end_of_dinner);
 		pthread_mutex_unlock(&dinner->std_out);
 		dinner->end_of_dinner = ft_end_of_dinner(dinner);
-		printf("end_of_dinner =====> %d\n", dinner->end_of_dinner);
 	}
 	pthread_mutex_unlock(&dinner->mutex_dispatcher);
 	ft_stop_dinner(dinner);
