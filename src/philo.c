@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: fvizcaya42 <fvizcaya42@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 17:28:50 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/02/06 21:19:00 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:33:15 by fvizcaya42       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ void	*ft_philo(void *ptr)
 	while (true)
 	{
 		// printf("¡Hola!, soy el philo %d\n", i);
+		ft_think(&args->dinner, &args->dinner.philos[i]);
 		ft_pickup_forks(&args->dinner, &args->dinner.philos[i]);
 		ft_eat(&args->dinner, &args->dinner.philos[i]);
-		// ft_drop_forks(&args->dinner, &args->dinner.philos[i]);
+		ft_drop_forks(&args->dinner, &args->dinner.philos[i]);
 		ft_sleep(&args->dinner, &args->dinner.philos[i]);
-		ft_think(&args->dinner, &args->dinner.philos[i]);
 	}
 	return (NULL);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: fvizcaya42 <fvizcaya42@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 13:43:31 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/02/06 21:05:49 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:32:04 by fvizcaya42       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,15 @@ static void	ft_wait_a_while(const t_dinner *dinner, int time)
 
 int	ft_eat(t_dinner *dinner, t_philo *philo)
 {
-	// philo->status = eating; 
-	// printf("Entra\n");
 	pthread_mutex_lock(&philo->mutex_timer);
 	philo->action_timer = 0;
 	philo->status = eating;
 	dinner->took_last_meal = philo->id;
 	ft_print_status(philo, &dinner->std_out);
 	ft_wait_a_while((const t_dinner *) dinner, dinner->args.time_to_eat);
-	// printf("come\n");
 	philo->num_meals++;
 	philo->last_meal_time = ft_get_current_time();
 	pthread_mutex_unlock(&philo->mutex_timer);
-	pthread_mutex_unlock(&dinner->forks[philo->l_fork]);
-	// printf("Soy el philo %d y acabo de soltar el tenedor izquierdo.\n", philo->id);
-	pthread_mutex_unlock(&dinner->forks[philo->r_fork]);
-	// printf("Soy el philo %d y acabo de coger el tenedor derecho.\n", philo->id);
 	return (0);
 }
 
