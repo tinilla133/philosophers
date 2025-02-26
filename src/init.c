@@ -74,21 +74,20 @@ static void	ft_init_philos(t_dinner *dinner)
 	}
 }
 
-static void	ft_create_threads(t_philoargs *args)
+static void	ft_create_threads(t_program *program)
 {
 	int	i;
 
 	i = 0;
-	while (i < args->dinner.args.num_philos)
+	while (i < dinner.args.num_philos)
 	{
-		printf("Num philos: %d\n", args->dinner.args.num_philos);
-		args->philo_num = i;
-		pthread_create(&args->dinner.philos[i].thread, \
-						NULL, ft_philo, args);
+		printf("Num philos: %d\n", dinner->args.num_philos);
+		pthread_create(dinner->philos[i].thread, \
+						NULL, ft_philo, &dinner->philos[i]);
 		i++;
 	}
-	pthread_create(&args->dinner.dispatcher, NULL, ft_dispatcher, \
-					&args->dinner);
+	pthread_create(dinner->dispatcher, NULL, ft_dispatcher, \
+					&dinner);
 	printf("Retornamos de ft_create_threads()\n");
 }
 

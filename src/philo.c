@@ -28,11 +28,9 @@ int	ft_is_dead(t_dinner *dinner)
 
 void	*ft_philo(void *ptr)
 {
-	t_philoargs	*args;
-	int			i;
+	t_program	*program;
 
-	args = (t_philoargs *) ptr;
-	i = args->philo_num;
+	program = (t_program *) ptr;
 	/*
 	********** Coger tenedores *************
 	
@@ -59,12 +57,12 @@ void	*ft_philo(void *ptr)
 	consideramos que cuando un filósofo no está comiendo ni durmiendo, está pensando.
 	*/
 	usleep(1000);
-	if (!(args->philo_num % 2))
-		ft_think(&args->dinner, &args->dinner.philos[i]);
+	if (!((philo->id + 1) % 2))
+		ft_think(&args->dinner, philo);
 	while (true)
 	{
 		// printf("¡Hola!, soy el philo %d\n", i);
-		ft_think(&args->dinner, &args->dinner.philos[i]);
+		// ft_think(&args->dinner, &args->dinner.philos[i]);
 		ft_pickup_forks(&args->dinner, &args->dinner.philos[i]);
 		ft_eat(&args->dinner, &args->dinner.philos[i]);
 		ft_drop_forks(&args->dinner, &args->dinner.philos[i]);

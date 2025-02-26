@@ -75,11 +75,12 @@ typedef struct s_dinner
 	pthread_mutex_t	std_out;
 }				t_dinner;
 
-typedef struct s_philoargs
+typedef struct s_program
 {
-	t_dinner	dinner;
-	int			philo_num;
-}				t_philoargs;
+	t_philo		*philo;
+	t_dinner	*dinner;
+	t_args		*args;
+}				t_program;
 
 int		ft_parse_args(int argc, char **argv, t_args *args);
 int		ft_init(t_philoargs *philoargs);
