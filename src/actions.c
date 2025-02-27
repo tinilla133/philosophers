@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvizcaya42 <fvizcaya42@student.42.fr>      +#+  +:+       +#+        */
+/*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 13:43:31 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/02/24 19:32:04 by fvizcaya42       ###   ########.fr       */
+/*   Updated: 2025/02/27 20:05:13 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_sleep(t_dinner *dinner, t_philo *philo)
 	philo->action_timer = 0;
 	ft_print_status(philo, &dinner->std_out);
 	ft_wait_a_while((const t_dinner *) dinner, dinner->args.time_to_sleep);
-	philo->status = thinking,
+	philo->status = thinking;
 	pthread_mutex_unlock(&philo->mutex_timer);
 	ft_think(dinner, philo);
 }

@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 11:18:22 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/02/06 20:53:38 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/02/27 19:47:59 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct s_program
 }				t_program;
 
 int		ft_parse_args(int argc, char **argv, t_args *args);
-int		ft_init(t_philoargs *philoargs);
+int		ft_init(t_program *program);
 int		ft_get_current_time(void);
 void	*ft_philo(void *ptr);
 int		ft_eat(t_dinner *dinner, t_philo *philo);
@@ -94,6 +94,6 @@ void	ft_drop_forks(t_dinner *dinner, t_philo *philo);
 void	ft_print_status(t_philo	*philo, pthread_mutex_t *std_out);
 void	*ft_dispatcher(void *ptr);
 t_bool	ft_end_of_dinner(t_dinner *dinner);
-void	ft_stop_dinner(t_dinner *dinner);
+void	ft_stop_dinner(t_program *program);
 
 #endif
