@@ -12,27 +12,21 @@
 
 #include <philo.h>
 
-int	ft_pickup_forks(t_dinner *dinner, t_philo *philo)
+int	ft_pickup_forks(t_program *program)
 {
-	// printf("l_fork_num ======> %d\n", philo->l_fork);
-	// printf("r_fork_num ======> %d\n", philo->r_fork);
-	/* pthread_mutex_lock(&dinner->mutex_dinner);
-	if (philo->id == dinner->took_last_meal)
-	{
-		pthread_mutex_unlock(&dinner->mutex_dinner);
-		ft_think(dinner, philo);
-	}
-	pthread_mutex_unlock(&dinner->mutex_dinner); */
-	pthread_mutex_lock(&dinner->forks[philo->l_fork]);
-	philo->status = picking_fork;
-	ft_print_status(philo, &dinner->std_out);
-	pthread_mutex_lock(&dinner->forks[philo->r_fork]);
-	ft_print_status(philo, &dinner->std_out);
+	pthread_mutex_lock(&program->std_out);
+	printf("Entra en ft_pickup_forks el philo %d\n", program->philo->id + 1);
+	pthread_mutex_unlock(&program->std_out);
+	pthread_mutex_lock(&program->dinner->forks[program->philo->l_fork]);
+	program->philo->status = picking_fork;
+	ft_print_status(program);
+	pthread_mutex_lock(&program->dinner->forks[program->philo->r_fork]);
+	ft_print_status(program);
 	return (0);
 }
 
-void	ft_drop_forks(t_dinner *dinner, t_philo *philo)
+void	ft_drop_forks(t_program *program)
 {
-	pthread_mutex_unlock(&dinner->forks[philo->l_fork]);
-	pthread_mutex_unlock(&dinner->forks[philo->r_fork]);
+	pthread_mutex_unlock(&program->dinner->forks[program->philo->l_fork]);
+	pthread_mutex_unlock(&program->dinner->forks[program->philo->r_fork]);
 }

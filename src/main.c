@@ -23,10 +23,10 @@ static void	ft_inint_args(t_args *args)
 
 static int  ft_alloc_program(t_program *program)
 {
-    program->args = malloc (sizeof (t_args));
+    program->args = (t_args *) malloc(sizeof (t_args));
     if (!program->args)
         return (-1);
-    program->dinner = malloc (sizeof (t_dinner));
+    program->dinner = (t_dinner *) malloc (sizeof (t_dinner));
     if (!program->dinner)
     {
         free (program->args);
@@ -50,5 +50,5 @@ int	main(int argc, char **argv)
 	ft_init(&program);
 	// Comenzar la cena
 	// Terminar la cena, join de hilos, liberar memoria.
-	ft_stop_dinner(&program);
+	// ft_stop_dinner(&program);
 }

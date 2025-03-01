@@ -71,29 +71,28 @@ typedef struct s_dinner
 	t_bool			end_of_dinner;
 	pthread_t		dispatcher;
 	pthread_mutex_t	mutex_dispatcher;
-	pthread_mutex_t	mutex_dinner;
-	pthread_mutex_t	std_out;
 }				t_dinner;
 
 typedef struct s_program
 {
-	t_philo		*philo;
-	t_dinner	*dinner;
-	t_args		*args;
+	t_philo			*philo;
+	t_dinner		*dinner;
+	t_args			*args;
+	pthread_mutex_t	std_out;
 }				t_program;
 
 int		ft_parse_args(int argc, char **argv, t_args *args);
 int		ft_init(t_program *program);
 int		ft_get_current_time(void);
 void	*ft_philo(void *ptr);
-int		ft_eat(t_dinner *dinner, t_philo *philo);
-void	ft_sleep(t_dinner *dinner, t_philo *philo);
-void	ft_think(t_dinner *dinner, t_philo *philo);
-int		ft_pickup_forks(t_dinner *dinner, t_philo *philo);
-void	ft_drop_forks(t_dinner *dinner, t_philo *philo);
-void	ft_print_status(t_philo	*philo, pthread_mutex_t *std_out);
+int		ft_eat(t_program *program);
+void	ft_sleep(t_program *program);
+void	ft_think(t_program *program);
+int		ft_pickup_forks(t_program *program);
+void	ft_drop_forks(t_program *program);
+void	ft_print_status(t_program *program);
 void	*ft_dispatcher(void *ptr);
-t_bool	ft_end_of_dinner(t_dinner *dinner);
+t_bool	ft_end_of_dinner(t_program *program);
 void	ft_stop_dinner(t_program *program);
 
 #endif

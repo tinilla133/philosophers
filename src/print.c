@@ -25,22 +25,22 @@ static void	ft_strcpy(const char *src, char *dst, int len)
 	dst[i] = '\0';
 }
 
-void	ft_print_status(t_philo	*philo, pthread_mutex_t *std_out)
+void	ft_print_status(t_program *program)
 {
 	char	status[16];
 
-	if (philo->status == picking_fork)
+	if (program->philo->status == picking_fork)
 		ft_strcpy("has taken a fork", status, 16);
-	if (philo->status == eating)
+	if (program->philo->status == eating)
 		ft_strcpy("is eating", status, 16);
-	else if (philo->status == sleeping)
+	else if (program->philo->status == sleeping)
 		ft_strcpy("is sleeping", status, 16);
-	else if (philo->status == thinking)
+	else if (program->philo->status == thinking)
 		ft_strcpy("is thinking", status, 16);
-	else if (philo->status == dead)
+	else if (program->philo->status == dead)
 		ft_strcpy("died", status, 16);
-	pthread_mutex_lock(std_out);
-	printf("%d %d %s\n", ft_get_current_time(), philo->id + 1, status);
-	usleep(500000);
-	pthread_mutex_unlock(std_out);
+	pthread_mutex_lock(&program->std_out);
+	printf("%d %d %s\n", ft_get_current_time(), program->philo->id + 1, status);
+	// usleep(500000);
+	pthread_mutex_unlock(&program->std_out);
 }

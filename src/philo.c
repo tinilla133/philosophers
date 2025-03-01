@@ -32,17 +32,22 @@ void	*ft_philo(void *ptr)
 
 	program = (t_program *) ptr;
 
-	usleep(1000);
-	if (!((program->philo->id + 1) % 2))
-		ft_think(program->dinner, program->philo);
+	pthread_mutex_lock(&program->std_out);
+	printf("Hola, soy el philo %d\n", program->philo->id + 1);
+	printf("He comido %d veces.\n", program->philo->num_meals);
+	pthread_mutex_unlock(&program->std_out);
+	pthread_mutex_lock(&program->std_out);
+	printf("pa ke kieres saber eso jaja salu2\n");
+	pthread_mutex_unlock(&program->std_out);
+	/* if (!((program->philo->id + 1) % 2))
+		ft_think(program); */
 	while (true)
 	{
-		// printf("¡Hola!, soy el philo %d\n", i);
 		// ft_think(&args->dinner, &args->dinner.philos[i]);
-		ft_pickup_forks(program->dinner, program->philo);
-		ft_eat(program->dinner, program->philo);
-		ft_drop_forks(program->dinner, program->philo);
-		ft_sleep(program->dinner, program->philo);
+		ft_pickup_forks(program);
+		ft_eat(program);
+		ft_drop_forks(program);
+		ft_sleep(program);
 	}
 	return (NULL);
 }
