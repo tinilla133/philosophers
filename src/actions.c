@@ -12,42 +12,56 @@
 
 #include <philo.h>
 
-static void	ft_wait_a_while(const t_args *args, int time)
+/* static void	ft_wait_a_while(const t_args *args, int time)
 {
-	int	init_timer;
+	int	end_timer;
 
-	init_timer = ft_get_current_time();
+	(void) args;
+	end_timer = ft_get_current_time() + time;
 	// printf("El tiempo en la función de esperar: %d\n", time);
-	while (init_timer - time <= args->time_to_eat)
+	while (ft_get_current_time() < end_timer)
 	{
-		time = ft_get_current_time();
+		usleep(100);
 	}
 }
+	*/
 
-int	ft_eat(t_program *program)
+void	ft_eat(t_program *program)
 {
-	pthread_mutex_lock(&program->philo->mutex_timer);
-	program->philo->action_timer = 0;
+	program->philo->action_timer = ft_get_current_time();
 	program->philo->status = eating;
-	program->dinner->took_last_meal = program->philo->id;
 	ft_print_status(program);
-	ft_wait_a_while((const t_args *) program->args, program->args->time_to_eat);
+	// pthread_mutex_lock(&program->dinner->mutex_counter);
+	pthread_mutex_lock(&program->std_out);
+	while (ft_get_current_time() - program->philo->action_timer < \
+			program->args->time_to_eat)
+	{
+		printf("El philo %d entra en el while de ft_eat\n", program->philo->id + 1);
+		printf("Tiempo de comer %d\n", program->args->time_to_eat);
+		printf("El philo %d está comiendo %d ms\n", program->philo->id + 1, ft_get_current_time() - program->philo->action_timer);
+		usleep(1000);
+	}
+	pthread_mutex_unlock(&program->std_out);
+	// pthread_mutex_unlock(&program->dinner->mutex_counter);
+	// ft_wait_a_while((const t_args *) program->args, program->args->time_to_eat);
 	program->philo->num_meals++;
 	program->philo->last_meal_time = ft_get_current_time();
-	pthread_mutex_unlock(&program->philo->mutex_timer);
-	return (0);
+
+	pthread_mutex_lock(&program->std_out);
+    printf("El philo %d termina de comer\n", program->philo->id + 1);
+    pthread_mutex_unlock(&program->std_out);
 }
 
 void	ft_sleep(t_program *program)
 {
+	program->philo->action_timer = ft_get_current_time();
 	program->philo->status = sleeping;
-	pthread_mutex_lock(&program->philo->mutex_timer);
-	program->philo->action_timer = 0;
 	ft_print_status(program);
-	ft_wait_a_while((const t_args *) program->args, \
-					program->args->time_to_sleep);
-	pthread_mutex_unlock(&program->philo->mutex_timer);
-	ft_think(program);
+	while (ft_get_current_time() < program->philo->action_timer + \
+			program->args->time_to_sleep)
+	{
+		usleep(100);
+	}
 }
 
 void	ft_think(t_program *program)

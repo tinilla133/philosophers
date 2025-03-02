@@ -12,21 +12,21 @@
 
 #include <philo.h>
 
-int	ft_pickup_forks(t_program *program)
+void	ft_pickup_forks(t_program *program)
 {
-	pthread_mutex_lock(&program->std_out);
-	printf("Entra en ft_pickup_forks el philo %d\n", program->philo->id + 1);
-	pthread_mutex_unlock(&program->std_out);
 	pthread_mutex_lock(&program->dinner->forks[program->philo->l_fork]);
 	program->philo->status = picking_fork;
 	ft_print_status(program);
 	pthread_mutex_lock(&program->dinner->forks[program->philo->r_fork]);
 	ft_print_status(program);
-	return (0);
+	pthread_mutex_lock(&program->std_out);
+    printf("El philo %d ha tomado los tenedores %d y %d\n", program->philo->id + 1, program->philo->l_fork + 1, program->philo->r_fork + 1);
+    pthread_mutex_unlock(&program->std_out);
 }
 
 void	ft_drop_forks(t_program *program)
 {
+	printf("Entra en ft_drop_forks el philo %d\n", program->philo->id + 1);
 	pthread_mutex_unlock(&program->dinner->forks[program->philo->l_fork]);
 	pthread_mutex_unlock(&program->dinner->forks[program->philo->r_fork]);
 }

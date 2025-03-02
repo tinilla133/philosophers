@@ -29,6 +29,7 @@ void	ft_print_status(t_program *program)
 {
 	char	status[16];
 
+	pthread_mutex_lock(&program->std_out);
 	if (program->philo->status == picking_fork)
 		ft_strcpy("has taken a fork", status, 16);
 	if (program->philo->status == eating)
@@ -39,8 +40,6 @@ void	ft_print_status(t_program *program)
 		ft_strcpy("is thinking", status, 16);
 	else if (program->philo->status == dead)
 		ft_strcpy("died", status, 16);
-	pthread_mutex_lock(&program->std_out);
 	printf("%d %d %s\n", ft_get_current_time(), program->philo->id + 1, status);
-	// usleep(500000);
 	pthread_mutex_unlock(&program->std_out);
 }
