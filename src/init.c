@@ -29,6 +29,7 @@ static void	ft_get_fork_number(t_program *program)
 {
     int fork_swap;
 
+	(void) fork_swap;
 	/* if (!(program->philo->id % 2))
 	{
 		program->philo->r_fork = (program->philo->id + 1) % program->args->num_philos;
@@ -38,17 +39,27 @@ static void	ft_get_fork_number(t_program *program)
 	{
 		program->philo->r_fork = program->philo->id;
 		program->philo->l_fork = (program->philo->id + 1) % program->args->num_philos;
-	} */
-	program->philo->r_fork = (program->philo->id + 1) % program->args->num_philos;
+	}
+	*/
+	/*
 	program->philo->l_fork = program->philo->id;
+	program->philo->r_fork = (program->philo->id + 1) % program->args->num_philos;
 	if (program->philo->id == program->args->num_philos - 1)
 	{
 		fork_swap = program->philo->l_fork;
 		program->philo->l_fork = program->philo->r_fork;
 		program->philo->r_fork = fork_swap;
 	}
+	*/
+	program->philo->l_fork = program->philo->id;
+	program->philo->r_fork = program->philo->id + 1;
+	if (program->philo->id == program->args->num_philos - 1)
+	{
+		program->philo->l_fork = 0;
+		program->philo->r_fork = program->philo->id;
+	}
 	pthread_mutex_lock(&program->std_out);
-	printf("El philo %d tiene los tenedores %d y %d\n", program->philo->id + 1, \
+	printf("El philo %d tiene asignados los tenedores %d y %d\n", program->philo->id + 1, \
 		program->philo->l_fork + 1, program->philo->r_fork + 1);
 	pthread_mutex_unlock(&program->std_out);
 }
@@ -75,6 +86,17 @@ static int	ft_create_threads(t_program *program)
 	int	i;
 
 	i = 0;
+	if (pthread_create(&program->dinner->dispatcher, NULL, ft_dinner, \
+		program) != 0)
+	{
+		pthread_mutex_lock(&program->std_out);
+		printf("Error creating dispatcher thread\n");
+		pthread_mutex_unlock(&program->std_out);
+		return (-1);
+	}
+	pthread_mutex_lock(&program->std_out);
+	printf("Ha pasado de crear el hilo dispatcher\n");
+	pthread_mutex_unlock(&program->std_out);
 	while (i < program->args->num_philos)
 	{
 		program->philo = &program->dinner->philos[i];
@@ -83,9 +105,6 @@ static int	ft_create_threads(t_program *program)
 			return (-1);
 		i++;
 	}
-	if (pthread_create(&program->dinner->dispatcher, NULL, ft_dispatcher, \
-		&program->dinner) != 0)
-		return (-1);
 	return (0);
 }
 
@@ -102,10 +121,11 @@ int	ft_init(t_program *program)
     while (i < program->args->num_philos)
 		if (pthread_mutex_init(&program->dinner->forks[i++], NULL) != 0)
 			return (-1);
-	if (pthread_mutex_init(&program->dinner->mutex_dispatcher, NULL) != 0 || \
+	if (pthread_mutex_init(&program->dinner->mutex_dinner, NULL) != 0 || \
 		pthread_mutex_init(&program->std_out, NULL) != 0 || \
 		pthread_mutex_init(&program->dinner->mutex_counter, NULL) != 0)
 		return (-1);
-	ft_create_threads(program);
+	if (ft_create_threads(program) != 0)
+		return (-1);
 	return (0);
 }

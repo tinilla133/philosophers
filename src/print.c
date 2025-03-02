@@ -40,6 +40,6 @@ void	ft_print_status(t_program *program)
 		ft_strcpy("is thinking", status, 16);
 	else if (program->philo->status == dead)
 		ft_strcpy("died", status, 16);
-	printf("%d %d %s\n", ft_get_current_time(), program->philo->id + 1, status);
+	printf("%ld %d %s\n", ft_get_current_time(), program->philo->id + 1, status);
 	pthread_mutex_unlock(&program->std_out);
 }

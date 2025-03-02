@@ -43,10 +43,7 @@ void	*ft_philo(void *ptr)
 	// usleep(1000);
 	while (true)
 	{
-		// ft_think(&args->dinner, &args->dinner.philos[i]);
-		ft_pickup_forks(program);
 		ft_eat(program);
-		ft_drop_forks(program);
 		ft_sleep(program);
 		ft_think(program);
 	}

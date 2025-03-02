@@ -18,6 +18,7 @@ void	ft_pickup_forks(t_program *program)
 	program->philo->status = picking_fork;
 	ft_print_status(program);
 	pthread_mutex_lock(&program->dinner->forks[program->philo->r_fork]);
+	program->philo->status = picking_fork;
 	ft_print_status(program);
 	pthread_mutex_lock(&program->std_out);
     printf("El philo %d ha tomado los tenedores %d y %d\n", program->philo->id + 1, program->philo->l_fork + 1, program->philo->r_fork + 1);
