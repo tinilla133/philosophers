@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 19:20:17 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/02/27 20:00:12 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/03/04 18:47:58 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static t_bool	ft_philo_dead(t_program *program)
 		pthread_mutex_unlock(&program->std_out);
 		pthread_mutex_lock(&program->dinner->mutex_dinner);
 		if ((curr_time - program->dinner->philos[i].last_meal_time) > \
-			program->dinner->args.time_to_die)
+			program->args->time_to_die)
 		{
 			program->dinner->philos[i].status = dead;
 			pthread_mutex_unlock(&program->dinner->mutex_dinner);

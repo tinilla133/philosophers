@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 13:43:31 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/02/27 20:05:13 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/03/05 19:36:27 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,33 +24,33 @@ static void	ft_wait_a_while(int a_while)
 	}
 }
 
-void	ft_eat(t_program *program)
+void	ft_eat(t_philo *philo)
 {
-	ft_pickup_forks(program);
-	program->philo->status = eating;
-	ft_print_status(program);
-	ft_wait_a_while(program->args->time_to_eat);
-	program->philo->num_meals++;
-	program->philo->last_meal_time = ft_get_current_time();
-	pthread_mutex_lock(&program->std_out);
-    printf("El philo %d termina de comer\n", program->philo->id + 1);
-    pthread_mutex_unlock(&program->std_out);
-	ft_drop_forks(program);
+	ft_pickup_forks(philo);
+	philo->status = eating;
+	ft_print_status(philo);
+	ft_wait_a_while(philo->program->args->time_to_eat);
+	philo->num_meals++;
+	philo->last_meal_time = ft_get_current_time();
+	pthread_mutex_lock(&philo->program->std_out);
+    printf("El philo %d termina de comer\n", philo->id + 1);
+    pthread_mutex_unlock(&philo->program->std_out);
+	ft_drop_forks(philo);
 }
 
-void	ft_sleep(t_program *program)
+void	ft_sleep(t_philo *philo)
 {
-	program->dinner->action_time = ft_get_current_time();
-	program->philo->status = sleeping;
-	ft_print_status(program);
-	ft_wait_a_while(program->args->time_to_sleep);
+	philo->program->dinner->action_time = ft_get_current_time();
+	philo->status = sleeping;
+	ft_print_status(philo);
+	ft_wait_a_while(philo->program->args->time_to_sleep);
 }
 
-void	ft_think(t_program *program)
+void	ft_think(t_philo *philo)
 {
-	if (program->philo->status != thinking)
+	if (philo->status != thinking)
 	{
-		program->philo->status = thinking;
-		ft_print_status(program);
+		philo->status = thinking;
+		ft_print_status(philo);
 	}
 }

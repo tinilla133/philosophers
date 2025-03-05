@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:51:52 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/02/27 21:16:51 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/03/05 21:48:11 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ int	main(int argc, char **argv)
 {
 	t_program	program;
 
-    if (ft_alloc_program(&program) == -1)
-        return (0);
+	if (ft_alloc_program(&program) == -1)
+		return (0);
     ft_inint_args(program.args);
 	if (ft_parse_args(argc, argv, program.args) == -1)
 	{
