@@ -16,15 +16,10 @@ void	ft_pickup_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->program->dinner->forks[philo->l_fork]);
 	philo->status = picking_fork;
-	printf("El philo %d ha tomado el tenedor %d\n", philo->id + 1, philo->l_fork + 1);
 	ft_print_status(philo);
 	pthread_mutex_lock(&philo->program->dinner->forks[philo->r_fork]);
-	printf("El philo %d ha tomado el tenedor %d\n", philo->id + 1, philo->r_fork + 1);
 	philo->status = picking_fork;
 	ft_print_status(philo);
-	pthread_mutex_lock(&philo->program->std_out);
-    printf("El philo %d ha tomado los tenedores %d y %d\n", philo->id + 1, philo->l_fork + 1, philo->r_fork + 1);
-    pthread_mutex_unlock(&philo->program->std_out);
 }
 
 void	ft_drop_forks(t_philo *philo)

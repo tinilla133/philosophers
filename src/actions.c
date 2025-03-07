@@ -32,9 +32,6 @@ void	ft_eat(t_philo *philo)
 	ft_wait_a_while(philo->program->args->time_to_eat);
 	philo->num_meals++;
 	philo->last_meal_time = ft_get_current_time();
-	pthread_mutex_lock(&philo->program->std_out);
-    printf("El philo %d termina de comer\n", philo->id + 1);
-    pthread_mutex_unlock(&philo->program->std_out);
 	ft_drop_forks(philo);
 }
 

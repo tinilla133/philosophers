@@ -21,18 +21,14 @@ static t_bool	ft_philo_dead(t_program *program)
 	curr_time = ft_get_current_time();
 	while (i < program->args->num_philos)
 	{
-		pthread_mutex_lock(&program->std_out);
-		printf("Tiempo sin comer del philo %d: %d\n", i + 1, curr_time - program->dinner->philos[i].last_meal_time);
-		pthread_mutex_unlock(&program->std_out);
-		pthread_mutex_lock(&program->dinner->mutex_dinner);
 		if ((curr_time - program->dinner->philos[i].last_meal_time) > \
 			program->args->time_to_die)
 		{
+			pthread_mutex_lock(&program->dinner->mutex_dinner);
 			program->dinner->philos[i].status = dead;
 			pthread_mutex_unlock(&program->dinner->mutex_dinner);
 			return (true);
 		}
-		pthread_mutex_unlock(&program->dinner->mutex_dinner);
 		i++;
 	}
 	return (false);
@@ -70,13 +66,9 @@ void	*ft_dinner(void *ptr)
 
 	program = (t_program *) ptr;
 	program->dinner->end_of_dinner = false;
-	pthread_mutex_lock(&program->std_out);
-	printf("========> Entramos en ft_dinner()\n");
-	pthread_mutex_unlock(&program->std_out);
 	while (!program->dinner->end_of_dinner)
 	{
 		pthread_mutex_lock(&program->std_out);
-		printf("====> Hilo dinner <====\n");
 		printf("end_of_dinner =====> %d\n", program->dinner->end_of_dinner);
 		pthread_mutex_unlock(&program->std_out);
 		program->dinner->end_of_dinner = ft_end_of_dinner(program);
@@ -104,5 +96,7 @@ void	ft_stop_dinner(t_program *program)
 	pthread_mutex_destroy(&program->std_out);
 	free (program->dinner->philos);
 	free (program->dinner->forks);
+	free (program->dinner);
+	free (program->args);
 	pthread_exit(NULL);
 }
