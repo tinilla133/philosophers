@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I . -g3
+CFLAGS = -Wall -Wextra -Werror -I . -g # -fsanitize=thread
 
 NAME = philo
 SRC_DIR = src/

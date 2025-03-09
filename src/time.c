@@ -12,10 +12,11 @@
 
 #include "philo.h"
 
-inline long int	ft_get_current_time(void)
+inline time_t	ft_get_current_time(void)
 {
 	struct timeval	curr_time;
 
 	gettimeofday(&curr_time, NULL);
-	return ((int)(curr_time.tv_sec * 1000) + (int)(curr_time.tv_usec / 1000));
+	// return ((curr_time.tv_sec * 1000) + (curr_time.tv_usec / 1000));
+	return (curr_time.tv_sec * 1000);
 }
