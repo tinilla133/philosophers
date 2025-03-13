@@ -18,16 +18,15 @@ void	*ft_philo(void *ptr)
 
 	philo = (t_philo *) ptr;
 	(void) philo;
-	/* if (!philo->id % 2)
-	{
-		ft_think(philo);
-	} */
 	while (true)
 	{
-		ft_think(philo);
+		if (philo->num_meals == philo->program->args->times_must_eat)
+		{
+			break;
+		}
 		ft_eat(philo);
 		ft_sleep(philo);
-		printf("===\n");
+		ft_think(philo);
 	}
 	return (NULL);
 }

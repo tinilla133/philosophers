@@ -50,7 +50,7 @@ static t_bool	ft_num_meals_reached(t_program *program)
 	while (i < program->args->num_philos)
 	{
 		pthread_mutex_lock(&program->dinner->mutex_dinner);
-		if (program->dinner->philos[i].num_meals < program->args->times_must_eat)
+		if (program->dinner->philos[i].num_meals == program->args->times_must_eat)
 		{
 			ret = false;
 		}
@@ -82,12 +82,6 @@ void	*ft_dinner(void *ptr)
 void	ft_stop_dinner(t_program *program)
 {
 	int	i;
-
-	/*
-	pthread_mutex_lock(&program->debug);
-	printf("========> Entramos en ft_stop_dinner()\n");
-	pthread_mutex_unlock(&program->debug);
-	*/
 
 	i = 0;
 	while (i < program->args->num_philos)

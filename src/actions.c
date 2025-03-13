@@ -28,7 +28,6 @@
 
 void	ft_eat(t_philo *philo)
 {
-	// ft_pickup_forks(philo);
 	pthread_mutex_lock(&philo->program->dinner->forks[philo->l_fork]);
 	philo->status = picking_fork;
 	ft_print_status(philo, picking_fork);
@@ -38,9 +37,10 @@ void	ft_eat(t_philo *philo)
 	philo->status = eating;
 	ft_print_status(philo, eating);
 	usleep(philo->program->args->time_to_eat * 1000);
-	//ft_wait_a_while(philo->program->args->time_to_eat);
-	pthread_mutex_lock(&philo->mutex_time);
+	pthread_mutex_lock(&philo->program->dinner->mutex_dinner);
 	philo->num_meals++;
+	pthread_mutex_unlock(&philo->program->dinner->mutex_dinner);
+	pthread_mutex_lock(&philo->mutex_time);
 	philo->last_meal_time = ft_get_current_time();
 	pthread_mutex_unlock(&philo->mutex_time);
 	pthread_mutex_unlock(&philo->program->dinner->forks[philo->l_fork]);

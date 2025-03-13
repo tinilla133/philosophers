@@ -82,4 +82,7 @@ int	main(int argc, char **argv)
 		// Liberar memoria de program antes de salir
 	}
 	ft_init(&program);
+
+	// while (true)
+		ft_dinner(&program);
 }
