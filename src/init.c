@@ -12,132 +12,86 @@
 
 #include "philo.h"
 
-static int	ft_alloc_data_structs(t_program *program)
+static int	ft_alloc_data_structs(t_dinner *dinner)
 {
-	program->dinner->forks = (pthread_mutex_t *) malloc (program->args->num_philos * \
+	dinner->forks = (pthread_mutex_t *) malloc (dinner->args->num_philos * \
 		sizeof (pthread_mutex_t));
-	if (!program->dinner->forks)
+	if (!dinner->forks)
 		return (-1);
-	program->dinner->philos = (t_philo *) malloc (program->args->num_philos * \
+	dinner->philos = (t_philo *) malloc (dinner->args->num_philos * \
 					sizeof (t_philo));
-	if (!program->dinner->philos)
+	if (!dinner->philos)
 		return (-1);
 	return (0);
 }
 
-static void	ft_get_fork_number(t_program *program)
+static void	ft_set_fork_numbers(t_philo *philo)
 {
-    int fork_swap;
-	int i;
-
-	(void) fork_swap;
-	/* if (!(program->philo->id % 2))
+	if (!(philo->id % 2))
 	{
-		program->philo->r_fork = (program->philo->id + 1) % program->args->num_philos;
-		program->philo->l_fork = program->philo->id;
+		philo->r_fork = (philo->id + 1) % philo->dinner->args->num_philos;
+		philo->l_fork = philo->id;
 	}
 	else
 	{
-		program->philo->r_fork = program->philo->id;
-		program->philo->l_fork = (program->philo->id + 1) % program->args->num_philos;
+		philo->r_fork = philo->id;
+		philo->l_fork = (philo->id + 1) % philo->dinner->args->num_philos;
 	}
-	*/
-	/*
-	program->philo->l_fork = program->philo->id;
-	program->philo->r_fork = (program->philo->id + 1) % program->args->num_philos;
-	if (program->philo->id == program->args->num_philos - 1)
-	{
-		fork_swap = program->philo->l_fork;
-		program->philo->l_fork = program->philo->r_fork;
-		program->philo->r_fork = fork_swap;
-	}
-	*/
-	i = 0;
-	printf("El número de filósofos es %d\n", program->args->num_philos);
-	while (i < program->args->num_philos)
-	{
-		if (!(program->dinner->philos[i].id % 2))
-		{
-			program->dinner->philos[i].r_fork = (program->dinner->philos[i].id + 1) % program->args->num_philos;
-			program->dinner->philos[i].l_fork = program->dinner->philos[i].id;
-		}
-		else
-		{
-			program->dinner->philos[i].r_fork = program->dinner->philos[i].id;
-			program->dinner->philos[i].l_fork = (program->dinner->philos[i].id + 1) % program->args->num_philos;
-		}
-		i++;
-	}
-	i = 0;
-	while (i < program->args->num_philos)
-	{
-		printf("El philo %d tiene asignados los tenedores %d y %d\n", program->dinner->philos[i].id + 1, \
-		program->dinner->philos[i].l_fork + 1, program->dinner->philos[i].r_fork + 1);
-		i++;
-	}
+	printf("El philo %d tiene asignados los tenedores %d y %d\n", philo->id + 1, \
+		philo->l_fork + 1, philo->r_fork + 1);
 }
 
-static void	ft_init_philos(t_program *program)
+static void	ft_init_philos(t_dinner *dinner)
 {
 	int	i;
 
 	i = 0;
-	while (i < program->args->num_philos)
+	while (i < dinner->args->num_philos)
 	{
-		program->dinner->philos[i].id = i;
-		program->dinner->philos[i].dead = false;
-		program->dinner->philos[i].last_meal_time = ft_get_current_time();
-		program->dinner->philos[i].num_meals = 0;
-		program->dinner->philos[i].program = program;
-		ft_get_fork_number(program);
+		dinner->philos[i].id = i;
+		dinner->philos[i].dead = false;
+		dinner->philos[i].last_meal_time = ft_get_current_time();
+		dinner->philos[i].num_meals = 0;
+		dinner->philos[i].dinner = dinner;
+		ft_set_fork_numbers(&dinner->philos[i]);
 		i++;
 	}
 }
 
-static int	ft_create_threads(t_program *program)
+static int	ft_create_threads(t_dinner *dinner)
 {
 	int	i;
 
-	i = 0;/* 
-	pthread_mutex_lock(&program->std_out);
-	pthread_mutex_unlock(&program->std_out); */
-	printf("Numero de hilos creados: %d\n", program->args->num_philos);
-	while (i < program->args->num_philos)
+	i = 0;
+	while (i < dinner->args->num_philos)
 	{
-		printf("philo : %d, creating...\n", program->dinner->philos[i].id);
-		if (pthread_create(&program->dinner->philos[i].thread, \
-						NULL, ft_philo, &program->dinner->philos[i]) != 0)
+		if (pthread_create(&dinner->philos[i].thread, \
+						NULL, ft_philo, &dinner->philos[i]) != 0)
 			return (-1);
 		i++;
 	}
-	printf("Ha pasado de crear el hilo dispatcher\n");
-/* 	if (pthread_create(&program->dinner->dispatcher, NULL, ft_dinner, \
-		program) != 0)
-	{
-		pthread_mutex_lock(&program->std_out);
-		printf("Error creating dispatcher thread\n");
-		pthread_mutex_unlock(&program->std_out);
-		return (-1);
-	} */
 	return (0);
 }
 
-int	ft_init(t_program *program)
+int	ft_init(t_dinner *dinner)
 {
 	int i;
 
 	i = 0;
-	if (ft_alloc_data_structs(program) == -1)
+	if (ft_alloc_data_structs(dinner) == -1)
 		return (perror("ERROR"), -1);
-	program->dinner->end_of_dinner = false;
-	ft_init_philos(program);
-    while (i < program->args->num_philos)
-		if (pthread_mutex_init(&program->dinner->forks[i++], NULL) != 0)
+	dinner->end_of_dinner = false;
+	ft_init_philos(dinner);
+	while (i < dinner->args->num_philos)
+		if (pthread_mutex_init(&dinner->forks[i++], NULL) != 0)
 			return (-1);
-	if (pthread_mutex_init(&program->dinner->mutex_dinner, NULL) != 0 || \
-		pthread_mutex_init(&program->std_out, NULL) != 0 )
+	if (pthread_mutex_init(&dinner->mutex_eating, NULL) != 0 || \
+		pthread_mutex_init(&dinner->mutex_time, NULL) != 0 || \
+		pthread_mutex_init(&dinner->mutex_dead, NULL) != 0 || \
+		pthread_mutex_init(&dinner->mutex_end, NULL) != 0 || \
+		pthread_mutex_init(&dinner->std_out, NULL) != 0 )
 		return (-1);
-	if (ft_create_threads(program) != 0)
+	if (ft_create_threads(dinner) != 0)
 		return (-1); 
 	return (0);
 }

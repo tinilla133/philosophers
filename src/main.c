@@ -21,32 +21,32 @@ static void	ft_inint_args(t_args *args)
 	args->times_must_eat = 0;
 }
 
-static int	ft_alloc_program(t_program *program)
+static int	ft_alloc_dinner(t_dinner *dinner)
 {
-	program->args = (t_args *) malloc(sizeof (t_args));
-	if (!program->args)
+	dinner->args = (t_args *) malloc(sizeof (t_args));
+	if (!dinner->args)
 		return (-1);
-	program->dinner = (t_dinner *) malloc (sizeof (t_dinner));
-	if (!program->dinner)
+	dinner = (t_dinner *) malloc (sizeof (t_dinner));
+	if (!dinner)
 	{
-		free (program->args);
+		free (dinner->args);
 		return (-1);
 	}
 	return (0);
 }
 
-static int	ft_alloc_philos_and_forks(t_program *program)
+static int	ft_alloc_philos_and_forks(t_dinner *dinner)
 {
 	int	num_philos;
 
-	num_philos = program->args->num_philos;
-	program->dinner->forks = (pthread_mutex_t *) malloc(num_philos * \
+	num_philos = dinner->args->num_philos;
+	dinner->forks = (pthread_mutex_t *) malloc(num_philos * \
 		sizeof (pthread_mutex_t));
-	if (!program->dinner->forks)
+	if (!dinner->forks)
 		return (-1);
-	program->dinner->philos = (t_philo *) malloc(num_philos * \
+	dinner->philos = (t_philo *) malloc(num_philos * \
 					sizeof (t_philo));
-	if (!program->dinner->philos)
+	if (!dinner->philos)
 		return (-1);
 	return (0);
 }
@@ -61,28 +61,26 @@ static void	ft_print_arguments(const t_args *args)
 }
 int	main(int argc, char **argv)
 {
-	t_program	program;
+	t_dinner	dinner;
 
-	if (ft_alloc_program(&program) == -1)
+	if (ft_alloc_dinner(&dinner) == -1)
 	{
 		perror("Error in ft_alloc_program");
 		return (0);
 	}
-	ft_inint_args(program.args);
-	if (ft_parse_args(argc, argv, program.args) == -1)
+	ft_inint_args(dinner.args);
+	if (ft_parse_args(argc, argv, dinner.args) == -1)
 	{
 		printf("Arguments error.\n");
 		return (0);
 	}
-	ft_print_arguments(program.args);
-	if (ft_alloc_philos_and_forks(&program) == -1)
+	ft_print_arguments(dinner.args);
+	if (ft_alloc_philos_and_forks(&dinner) == -1)
 	{
 		perror("Error in ft_alloc_philos_and_forks");
 		return (0);
 		// Liberar memoria de program antes de salir
 	}
-	ft_init(&program);
-
-	// while (true)
-		ft_dinner(&program);
+	ft_init(&dinner);
+	ft_dinner(&dinner);
 }

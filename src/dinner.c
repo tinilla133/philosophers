@@ -12,93 +12,91 @@
 
 #include "philo.h"
 
-static t_bool	ft_philo_dead(t_program *program)
+static t_bool	ft_philo_dead(t_dinner *dinner)
 {
 	int		i;
 	int		curr_time;
-	t_bool	ret;
 
 	i = 0;
-	pthread_mutex_lock(&program->mutex_time);
 	curr_time = ft_get_current_time();
-	pthread_mutex_unlock(&program->mutex_time);
-	ret = false;
-	while (i < program->args->num_philos)
+	pthread_mutex_lock(&dinner->mutex_time);
+	while (i < dinner->args->num_philos)
 	{
-		pthread_mutex_lock(&program->dinner->philos[i].mutex_time);
-		if ((curr_time - program->dinner->philos[i].last_meal_time) > \
-			program->args->time_to_die)
+		if ((curr_time - dinner->philos[i].last_meal_time) > \
+			dinner->args->time_to_die)
 		{
-			program->dinner->philos[i].status = dead;
-			ret = true;
+			pthread_mutex_lock(&dinner->mutex_dead);
+			dinner->philos[i].dead = true;
+			pthread_mutex_unlock(&dinner->mutex_dead);
+			ft_print_status(&dinner->philos[i], dead);
+			pthread_mutex_unlock(&dinner->mutex_time);
+			return (true);
 		}
-		pthread_mutex_unlock(&program->dinner->philos[i].mutex_time);
 		i++;
 	}
-	return (ret);
+	pthread_mutex_unlock(&dinner->mutex_time);
+	return (false);
 }
 
-static t_bool	ft_num_meals_reached(t_program *program)
+static t_bool	ft_num_meals_reached(t_dinner *dinner)
 {
 	int		i;
-	t_bool	ret;
 
-	if (program->args->times_must_eat == -1)
+	if (dinner->args->times_must_eat == -1)
 		return (false);
 	i = 0;
-	ret = true;
-	while (i < program->args->num_philos)
+	while (i < dinner->args->num_philos)
 	{
-		pthread_mutex_lock(&program->dinner->mutex_dinner);
-		if (program->dinner->philos[i].num_meals == program->args->times_must_eat)
+		pthread_mutex_lock(&dinner->mutex_eating);
+		if (dinner->philos[i].num_meals < dinner->args->times_must_eat)
 		{
-			ret = false;
+			pthread_mutex_unlock(&dinner->mutex_eating);
+			return (false);
 		}
-		pthread_mutex_unlock(&program->dinner->mutex_dinner);
+		pthread_mutex_unlock(&dinner->mutex_eating);
 		i++;
 	}
-	return (ret);
+	return (true);
 }
 
-static inline t_bool	ft_end_of_dinner(t_program *program)
+static inline t_bool	ft_end_of_dinner(t_dinner *dinner)
 {
-	return (ft_philo_dead(program) || ft_num_meals_reached(program));
+	return (ft_philo_dead(dinner) || ft_num_meals_reached(dinner));
 }
 
-void	*ft_dinner(void *ptr)
+void	ft_dinner(t_dinner *dinner)
 {
-	t_program	*program;
-
-	program = (t_program *) ptr;
-	program->dinner->end_of_dinner = false;
-	while (!program->dinner->end_of_dinner)
+	dinner->end_of_dinner = false;
+	while (!dinner->end_of_dinner)
 	{
-		program->dinner->end_of_dinner = ft_end_of_dinner(program);
+		dinner->end_of_dinner = ft_end_of_dinner(dinner);
 	}
-	ft_stop_dinner(program);
-	return (NULL);
+	ft_stop_dinner(dinner);
 }
 
-void	ft_stop_dinner(t_program *program)
+void	ft_stop_dinner(t_dinner *dinner)
 {
 	int	i;
 
+	printf("Entramos en ft_stop_dinner\n");
 	i = 0;
-	while (i < program->args->num_philos)
+	while (i < dinner->args->num_philos)
 	{
-		pthread_join(program->dinner->philos[i++].thread, NULL);
-		pthread_mutex_destroy(&program->dinner->philos[i].mutex_time);
-		pthread_mutex_destroy(&program->dinner->forks[i]);
+		pthread_join(dinner->philos[i++].thread, NULL);
 	}
-	pthread_join(program->dinner->dispatcher, NULL);
-	pthread_mutex_destroy(&program->dinner->mutex_dinner);
-	pthread_mutex_destroy(&program->dinner->mutex_dead);
-	pthread_mutex_destroy(&program->std_out);
-	pthread_mutex_destroy(&program->mutex_time);
-	pthread_mutex_destroy(&program->dinner->mutex_end);
-	free (program->dinner->philos);
-	free (program->dinner->forks);
-	free (program->dinner);
-	free (program->args);
+	i = 0;
+	while (i < dinner->args->num_philos)
+	{
+		pthread_mutex_destroy(&dinner->forks[i++]);
+	}
+	pthread_mutex_destroy(&dinner->mutex_eating);
+	pthread_mutex_destroy(&dinner->mutex_time);
+	pthread_mutex_destroy(&dinner->mutex_dead);
+	pthread_mutex_destroy(&dinner->mutex_end);
+	pthread_mutex_destroy(&dinner->std_out);
 	pthread_exit(NULL);
+	free (dinner->philos);
+	free (dinner->forks);
+	free (dinner->args);
+	free (dinner);
 }

@@ -12,61 +12,39 @@
 
 #include <philo.h>
 
-/* static void	ft_wait_a_while(int a_while)
-{
-	int	end_time;
 
-	while
-	end_time = ft_get_current_time() + a_while;
-	while (ft_get_current_time() < end_time)
-	{
-		// usleep(1000);
-	}
-	
-}
-*/
-
-void	ft_eat(t_philo *philo)
+static void	ft_eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->program->dinner->forks[philo->l_fork]);
-	philo->status = picking_fork;
+	pthread_mutex_lock(&philo->dinner->forks[philo->l_fork]);
 	ft_print_status(philo, picking_fork);
-	pthread_mutex_lock(&philo->program->dinner->forks[philo->r_fork]);
-	philo->status = picking_fork;
+	pthread_mutex_lock(&philo->dinner->forks[philo->r_fork]);
 	ft_print_status(philo, picking_fork);
-	philo->status = eating;
 	ft_print_status(philo, eating);
-	usleep(philo->program->args->time_to_eat * 1000);
-	pthread_mutex_lock(&philo->program->dinner->mutex_dinner);
-	philo->num_meals++;
-	pthread_mutex_unlock(&philo->program->dinner->mutex_dinner);
-	pthread_mutex_lock(&philo->mutex_time);
+	pthread_mutex_lock(&philo->dinner->mutex_time);
 	philo->last_meal_time = ft_get_current_time();
-	pthread_mutex_unlock(&philo->mutex_time);
-	pthread_mutex_unlock(&philo->program->dinner->forks[philo->l_fork]);
-	pthread_mutex_unlock(&philo->program->dinner->forks[philo->r_fork]);
-	pthread_mutex_lock(&philo->program->std_out);
-	printf("Ha soltado los tenedores el philo %d\n", philo->id + 1);
-	pthread_mutex_unlock(&philo->program->std_out);
-	// ft_drop_forks(philo);
+	pthread_mutex_unlock(&philo->dinner->mutex_time);
+	usleep(philo->dinner->args->time_to_eat * 1000);
+	pthread_mutex_lock(&philo->dinner->mutex_eating);
+	philo->num_meals++;
+	pthread_mutex_unlock(&philo->dinner->mutex_eating);
+	pthread_mutex_unlock(&philo->dinner->forks[philo->l_fork]);
+	pthread_mutex_unlock(&philo->dinner->forks[philo->r_fork]);
 }
 
-void	ft_sleep(t_philo *philo)
+static void	ft_sleep(t_philo *philo)
 {
-	// philo->program->dinner->action_time = ft_get_current_time();
-	philo->status = sleeping;
-	pthread_mutex_lock(&philo->program->std_out);
 	ft_print_status(philo, sleeping);
-	pthread_mutex_unlock(&philo->program->std_out);
-	usleep(philo->program->args->time_to_sleep * 1000);
-	// ft_wait_a_while(philo->program->args->time_to_sleep);
+	usleep(philo->dinner->args->time_to_sleep * 1000);
 }
 
-void	ft_think(t_philo *philo)
+static void	ft_think(t_philo *philo)
 {
-	if (philo->status != thinking)
-	{
-		philo->status = thinking;
-		ft_print_status(philo, thinking);
-	}
+	ft_print_status(philo, thinking);
+}
+
+void	ft_philo_actions(t_philo *philo)
+{
+	ft_eat(philo);
+	ft_sleep(philo);
+	ft_think(philo);
 }

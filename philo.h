@@ -25,8 +25,7 @@
 
 # define DEBUG_MODE
 
-typedef struct s_philo		t_philo;
-typedef struct s_program	t_program;
+typedef struct s_dinner		t_dinner;
 
 typedef enum e_bool
 {
@@ -45,17 +44,15 @@ typedef enum e_status
 
 typedef struct s_philo
 {
-	t_status		status;
 	int				id;
 	pthread_t		thread;
 	int				action_time;
-	pthread_mutex_t	mutex_time;
 	int				last_meal_time;
 	int				num_meals;
 	int				l_fork;
 	int				r_fork;
 	t_bool			dead;
-	t_program		*program;
+	t_dinner		*dinner;
 }				t_philo;
 
 typedef struct s_args
@@ -69,37 +66,25 @@ typedef struct s_args
 
 typedef struct s_dinner
 {
-	pthread_mutex_t	*forks;
+	t_args			*args;
 	t_philo			*philos;
-	int				took_last_meal;
-	int				action_time;
+	pthread_mutex_t	*forks;
 	t_bool			end_of_dinner;
-	pthread_t		dispatcher;
-	pthread_mutex_t	mutex_dinner;
+	pthread_mutex_t	mutex_eating;
+	pthread_mutex_t	mutex_time;
 	pthread_mutex_t	mutex_dead;
 	pthread_mutex_t	mutex_end;
+	pthread_mutex_t	std_out;
+
 }				t_dinner;
 
-typedef struct s_program
-{
-	t_dinner		*dinner;
-	t_args			*args;
-	pthread_mutex_t	std_out;
-	pthread_mutex_t	debug;
-	pthread_mutex_t mutex_time;
-}				t_program;
-
 int				ft_parse_args(int argc, char **argv, t_args *args);
-int				ft_init(t_program *program);
+int				ft_init(t_dinner *dinner);
 time_t			ft_get_current_time(void);
 void			*ft_philo(void *ptr);
-void			ft_eat(t_philo *philo);
-void			ft_sleep(t_philo *philo);
-void			ft_think(t_philo *philo);
-void			ft_pickup_forks(t_philo *philo);
-void			ft_drop_forks(t_philo *philo);
+void			ft_philo_actions(t_philo *philo);
 void			ft_print_status(t_philo *philo, t_status status);
-void			*ft_dinner(void *ptr);
-void			ft_stop_dinner(t_program *program);
+void			ft_dinner(t_dinner *dinner);
+void			ft_stop_dinner(t_dinner *dinner);
 
 #endif

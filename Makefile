@@ -19,7 +19,6 @@ SRC_DIR = src/
 SRC = actions.c
 SRC += arguments.c
 SRC += dinner.c
-SRC += fork_actions.c
 SRC += init.c
 SRC += main.c
 SRC += philo.c
