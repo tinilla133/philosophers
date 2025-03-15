@@ -12,38 +12,38 @@
 
 #include "philo.h"
 
-static t_bool	ft_philo_dead(t_dinner *dinner)
+static void	ft_philo_dead(t_dinner *dinner)
 {
 	int		i;
 	int		curr_time;
 
 	i = 0;
 	curr_time = ft_get_current_time();
-	pthread_mutex_lock(&dinner->mutex_time);
 	while (i < dinner->args->num_philos)
 	{
+		pthread_mutex_lock(&dinner->mutex_time);
 		if ((curr_time - dinner->philos[i].last_meal_time) > \
 			dinner->args->time_to_die)
 		{
-			pthread_mutex_lock(&dinner->mutex_dead);
-			dinner->philos[i].dead = true;
-			pthread_mutex_unlock(&dinner->mutex_dead);
 			ft_print_status(&dinner->philos[i], dead);
+			dinner->philos[i].dead = true;
+			pthread_mutex_lock(&dinner->mutex_end);
+			dinner->end_of_dinner = true;
+			pthread_mutex_unlock(&dinner->mutex_end);
 			pthread_mutex_unlock(&dinner->mutex_time);
-			return (true);
+			break ;
 		}
+		pthread_mutex_unlock(&dinner->mutex_time);
 		i++;
 	}
-	pthread_mutex_unlock(&dinner->mutex_time);
-	return (false);
 }
 
-static t_bool	ft_num_meals_reached(t_dinner *dinner)
+static void	ft_num_meals_reached(t_dinner *dinner)
 {
 	int		i;
 
 	if (dinner->args->times_must_eat == -1)
-		return (false);
+		return ;
 	i = 0;
 	while (i < dinner->args->num_philos)
 	{
@@ -51,25 +51,27 @@ static t_bool	ft_num_meals_reached(t_dinner *dinner)
 		if (dinner->philos[i].num_meals < dinner->args->times_must_eat)
 		{
 			pthread_mutex_unlock(&dinner->mutex_eating);
-			return (false);
+			return ;
 		}
 		pthread_mutex_unlock(&dinner->mutex_eating);
 		i++;
 	}
-	return (true);
-}
-
-static inline t_bool	ft_end_of_dinner(t_dinner *dinner)
-{
-	return (ft_philo_dead(dinner) || ft_num_meals_reached(dinner));
+	pthread_mutex_lock(&dinner->mutex_end);
+	dinner->end_of_dinner = true;
+	pthread_mutex_unlock(&dinner->mutex_end);
 }
 
 void	ft_dinner(t_dinner *dinner)
 {
 	dinner->end_of_dinner = false;
-	while (!dinner->end_of_dinner)
+	while (true)
 	{
-		dinner->end_of_dinner = ft_end_of_dinner(dinner);
+		ft_philo_dead(dinner);
+		ft_num_meals_reached(dinner);
+		if (dinner->end_of_dinner)
+		{
+			break ;
+		}
 	}
 	ft_stop_dinner(dinner);
 }

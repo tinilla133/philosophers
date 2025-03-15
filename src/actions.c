@@ -12,6 +12,19 @@
 
 #include <philo.h>
 
+static void	ft_my_sleep(t_dinner *dinner, int sleep_time)
+{
+	time_t	time;
+
+	time = ft_get_current_time();
+	while (ft_get_current_time() < time + (time_t) sleep_time)
+	{
+		pthread_mutex_lock(&dinner->mutex_end);
+		if (dinner->end_of_dinner)
+			return (pthread_mutex_unlock(&dinner->mutex_end), (void) 0);
+		pthread_mutex_unlock(&dinner->mutex_end);
+	}
+}
 
 static void	ft_eat(t_philo *philo)
 {
@@ -23,18 +36,18 @@ static void	ft_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->dinner->mutex_time);
 	philo->last_meal_time = ft_get_current_time();
 	pthread_mutex_unlock(&philo->dinner->mutex_time);
-	usleep(philo->dinner->args->time_to_eat * 1000);
+	ft_my_sleep(philo->dinner, philo->dinner->args->time_to_eat);
 	pthread_mutex_lock(&philo->dinner->mutex_eating);
 	philo->num_meals++;
 	pthread_mutex_unlock(&philo->dinner->mutex_eating);
-	pthread_mutex_unlock(&philo->dinner->forks[philo->l_fork]);
 	pthread_mutex_unlock(&philo->dinner->forks[philo->r_fork]);
+	pthread_mutex_unlock(&philo->dinner->forks[philo->l_fork]);
 }
 
 static void	ft_sleep(t_philo *philo)
 {
 	ft_print_status(philo, sleeping);
-	usleep(philo->dinner->args->time_to_sleep * 1000);
+	ft_my_sleep(philo->dinner, philo->dinner->args->time_to_sleep);
 }
 
 static void	ft_think(t_philo *philo)
@@ -44,7 +57,16 @@ static void	ft_think(t_philo *philo)
 
 void	ft_philo_actions(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->dinner->mutex_end);
+	if (philo->dinner->end_of_dinner || philo->dead)
+	{
+		pthread_mutex_unlock(&philo->dinner->mutex_end);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->dinner->mutex_end);
 	ft_eat(philo);
+	pthread_mutex_lock(&philo->dinner->mutex_end);
 	ft_sleep(philo);
+	pthread_mutex_lock(&philo->dinner->mutex_end);
 	ft_think(philo);
 }

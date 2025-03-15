@@ -27,15 +27,12 @@ static int	ft_alloc_data_structs(t_dinner *dinner)
 
 static void	ft_set_fork_numbers(t_philo *philo)
 {
-	if (!(philo->id % 2))
+	philo->l_fork = philo->id;
+	philo->r_fork = (philo->id + 1) % philo->dinner->args->num_philos;
+	if (philo->id % 2)
 	{
-		philo->r_fork = (philo->id + 1) % philo->dinner->args->num_philos;
-		philo->l_fork = philo->id;
-	}
-	else
-	{
-		philo->r_fork = philo->id;
 		philo->l_fork = (philo->id + 1) % philo->dinner->args->num_philos;
+		philo->r_fork = philo->id;
 	}
 	printf("El philo %d tiene asignados los tenedores %d y %d\n", philo->id + 1, \
 		philo->l_fork + 1, philo->r_fork + 1);
