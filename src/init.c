@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:37:17 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/03/13 20:35:29 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/03/17 22:23:41 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	ft_set_fork_numbers(t_philo *philo)
 {
 	philo->l_fork = philo->id;
 	philo->r_fork = (philo->id + 1) % philo->dinner->args->num_philos;
-	if (philo->id % 2)
+	if (philo->id % 2 && philo->dinner->args->num_philos % 2 == 0)
 	{
 		philo->l_fork = (philo->id + 1) % philo->dinner->args->num_philos;
 		philo->r_fork = philo->id;
@@ -48,6 +48,7 @@ static void	ft_init_philos(t_dinner *dinner)
 		dinner->philos[i].id = i;
 		dinner->philos[i].dead = false;
 		dinner->philos[i].last_meal_time = ft_get_current_time();
+		printf("INit: last_meal_time: %ld\n", dinner->philos[i].last_meal_time);
 		dinner->philos[i].num_meals = 0;
 		dinner->philos[i].dinner = dinner;
 		ft_set_fork_numbers(&dinner->philos[i]);
@@ -86,7 +87,7 @@ int	ft_init(t_dinner *dinner)
 		pthread_mutex_init(&dinner->mutex_time, NULL) != 0 || \
 		pthread_mutex_init(&dinner->mutex_dead, NULL) != 0 || \
 		pthread_mutex_init(&dinner->mutex_end, NULL) != 0 || \
-		pthread_mutex_init(&dinner->std_out, NULL) != 0 )
+		pthread_mutex_init(&dinner->mutex_stdout, NULL) != 0 )
 		return (-1);
 	if (ft_create_threads(dinner) != 0)
 		return (-1); 
