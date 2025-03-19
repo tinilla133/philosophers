@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 17:28:50 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/03/17 22:40:17 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/03/19 20:32:49 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,8 @@ void	*ft_philo(void *ptr)
 	philo->last_meal_time = ft_get_current_time();
 	while (true)
 	{
-		pthread_mutex_lock(&philo->dinner->mutex_end);
-		if (philo->dinner->end_of_dinner)
-		{
-			pthread_mutex_unlock(&philo->dinner->mutex_end);
+		if (ft_check_end_flag(philo->dinner) < 0)
 			return (NULL);
-		}
-		pthread_mutex_unlock(&philo->dinner->mutex_end);
 		pthread_mutex_lock(&philo->dinner->mutex_eating);
 		if (philo->num_meals == philo->dinner->args->times_must_eat)
 		{

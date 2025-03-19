@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 13:43:31 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/03/17 22:43:14 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/03/19 21:18:35 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,23 @@
 static int	ft_grab_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->dinner->forks[philo->l_fork]);
-	if (ft_print_status(philo, picking_fork) < 0)
+	if (ft_check_end_flag(philo->dinner) < 0)
 		return (pthread_mutex_unlock(&philo->dinner->forks[philo->l_fork]), -1);
+	ft_print_status(philo, picking_fork);
 	pthread_mutex_lock(&philo->dinner->forks[philo->r_fork]);
-	if (ft_print_status(philo, picking_fork) < 0)
-		return (pthread_mutex_unlock(&philo->dinner->forks[philo->l_fork]), \
-			pthread_mutex_unlock(&philo->dinner->forks[philo->r_fork]), -1);
-	if (ft_print_status(philo, eating) < 0)
-		return (pthread_mutex_unlock(&philo->dinner->forks[philo->r_fork]), \
-			pthread_mutex_unlock(&philo->dinner->forks[philo->r_fork]), -1);
+	if (ft_check_end_flag(philo->dinner) < 0)
+	{
+		pthread_mutex_unlock(&philo->dinner->forks[philo->r_fork]);
+		return (pthread_mutex_unlock(&philo->dinner->forks[philo->l_fork]), -1);
+	}
+	ft_print_status(philo, picking_fork);
 	return (0);
 }
 
-static int	ft_drop_forks(t_philo *philo)
+static void	ft_drop_forks(t_philo *philo)
 {
-	if (philo->id % 2 && philo->dinner->args->num_philos % 2 == 0)
+	/*
+	if ((philo->id % 2) && !(philo->dinner->args->num_philos % 2))
 	{
 		pthread_mutex_unlock(&philo->dinner->forks[philo->l_fork]);
 		pthread_mutex_unlock(&philo->dinner->forks[philo->r_fork]);
@@ -39,13 +41,16 @@ static int	ft_drop_forks(t_philo *philo)
 		pthread_mutex_unlock(&philo->dinner->forks[philo->r_fork]);
 		pthread_mutex_unlock(&philo->dinner->forks[philo->l_fork]);
 	}
-	return (0);
+	*/
+	pthread_mutex_unlock(&philo->dinner->forks[philo->l_fork]);
+	pthread_mutex_unlock(&philo->dinner->forks[philo->r_fork]);
 }
 
 static int	ft_eat(t_philo *philo)
 {
 	if (ft_grab_forks(philo) < 0)
 		return (-1);
+	ft_print_status(philo, eating);
 	pthread_mutex_lock(&philo->dinner->mutex_time);
 	philo->last_meal_time = ft_get_current_time();
 	pthread_mutex_unlock(&philo->dinner->mutex_time);
@@ -53,38 +58,27 @@ static int	ft_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->dinner->mutex_eating);
 	philo->num_meals++;
 	pthread_mutex_unlock(&philo->dinner->mutex_eating);
-	if (ft_drop_forks(philo) < 0)
-		return (-1);
+	ft_drop_forks(philo);
 	return (0);
 }
 
 static int	ft_sleep(t_philo *philo)
 {
-	if (ft_print_status(philo, sleeping) < 0)
+	if (ft_check_end_flag(philo->dinner) < 0)
 		return (-1);
+	ft_print_status(philo, sleeping);
 	usleep(philo->dinner->args->time_to_sleep * 1000);
 	return (0);
 }
 
 int	ft_philo_actions(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->dinner->mutex_end);
-	if (philo->dinner->end_of_dinner)
-		return (pthread_mutex_unlock(&philo->dinner->mutex_end), -1);
-	pthread_mutex_unlock(&philo->dinner->mutex_end);
 	if (ft_eat(philo) < 0)
 		return (-1);
-	pthread_mutex_lock(&philo->dinner->mutex_end);
-	if (philo->dinner->end_of_dinner)
-		return (pthread_mutex_unlock(&philo->dinner->mutex_end), -1);
-	pthread_mutex_unlock(&philo->dinner->mutex_end);
 	if (ft_sleep(philo) < 0)
 		return (-1);
-	pthread_mutex_lock(&philo->dinner->mutex_end);
-	if (philo->dinner->end_of_dinner || philo->dead)
-		return (pthread_mutex_unlock(&philo->dinner->mutex_end), -1);
-	pthread_mutex_unlock(&philo->dinner->mutex_end);
-	if (ft_print_status(philo, thinking) < 0)
+	if (ft_check_end_flag(philo->dinner) < 0)
 		return (-1);
+	ft_print_status(philo, thinking);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 11:18:22 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/03/17 21:39:18 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/03/19 20:12:12 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_philo
 {
 	int				id;
 	pthread_t		thread;
-	time_t				last_meal_time;
+	time_t			last_meal_time;
 	int				num_meals;
 	int				l_fork;
 	int				r_fork;
@@ -81,9 +81,10 @@ int				ft_parse_args(int argc, char **argv, t_args *args);
 int				ft_init(t_dinner *dinner);
 time_t			ft_get_current_time(void);
 void			*ft_philo(void *ptr);
-int			ft_philo_actions(t_philo *philo);
-int			ft_print_status(t_philo *philo, t_status status);
+int				ft_philo_actions(t_philo *philo);
+void			ft_print_status(t_philo *philo, t_status status);
 void			ft_dinner(t_dinner *dinner);
+int				ft_check_end_flag(t_dinner *dinner);
 void			ft_stop_dinner(t_dinner *dinner);
 
 #endif

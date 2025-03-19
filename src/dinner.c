@@ -6,11 +6,23 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 19:20:17 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/03/17 22:16:10 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/03/19 21:50:28 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	ft_check_end_flag(t_dinner *dinner)
+{
+	pthread_mutex_lock(&dinner->mutex_end);
+	if (dinner->end_of_dinner)
+	{
+		pthread_mutex_unlock(&dinner->mutex_end);
+		return (-1);
+	}
+	pthread_mutex_unlock(&dinner->mutex_end);
+	return (0);
+}
 
 static void	ft_philo_dead(t_dinner *dinner)
 {
@@ -26,13 +38,12 @@ static void	ft_philo_dead(t_dinner *dinner)
 		last_meal_time = dinner->philos[i].last_meal_time;
 		pthread_mutex_unlock(&dinner->mutex_time);
 		if ((curr_time - last_meal_time) > \
-			(time_t)dinner->args->time_to_die)
+			(time_t) dinner->args->time_to_die)
 		{
-			printf("El philo %ld > %d\n", (curr_time - last_meal_time), dinner->args->time_to_die);
-			ft_print_status(&dinner->philos[i], dead);
 			pthread_mutex_lock(&dinner->mutex_end);
 			dinner->end_of_dinner = true;
 			pthread_mutex_unlock(&dinner->mutex_end);
+			ft_print_status(&dinner->philos[i], dead);
 			break ;
 		}
 		i++;
@@ -78,7 +89,6 @@ void	ft_stop_dinner(t_dinner *dinner)
 {
 	int	i;
 
-	printf("Entramos en ft_stop_dinner\n");
 	i = 0;
 	while (i < dinner->args->num_philos)
 	{
@@ -94,8 +104,4 @@ void	ft_stop_dinner(t_dinner *dinner)
 	pthread_mutex_destroy(&dinner->mutex_dead);
 	pthread_mutex_destroy(&dinner->mutex_end);
 	pthread_mutex_destroy(&dinner->mutex_stdout);
-/* 	free (dinner->philos);
-	free (dinner->forks);
-	free (dinner->args);
-	free (dinner); */
 }

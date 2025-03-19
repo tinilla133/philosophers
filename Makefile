@@ -6,12 +6,13 @@
 #    By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/26 12:02:18 by fvizcaya          #+#    #+#              #
-#    Updated: 2025/02/06 20:56:33 by fvizcaya         ###   ########.fr        #
+#    Updated: 2025/03/19 22:13:26 by fvizcaya         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I . -g # -fsanitize=thread
+# CFLAGS = -Wall -Wextra -Werror -I . -g # -fsanitize=thread 
+CFLAGS = -Wall -Wextra -Werror -I . -g -fsanitize=address
 
 NAME = philo
 SRC_DIR = src/

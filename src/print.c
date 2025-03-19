@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 19:56:27 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/03/17 22:17:01 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/03/19 22:14:41 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ static void	ft_strcpy(const char *src, char *dst, int len)
 	dst[i] = '\0';
 }
 
-int	ft_print_status(t_philo *philo, t_status status)
+void	ft_print_status(t_philo *philo, t_status status)
 {
-	char	str_status[16];
+	char	str_status[32];
 	time_t	current_time;
 
 	if (status == picking_fork)
@@ -41,13 +41,7 @@ int	ft_print_status(t_philo *philo, t_status status)
 	else if (status == dead)
 		ft_strcpy("died", str_status, 16);
 	current_time = ft_get_current_time();
-	pthread_mutex_lock(&philo->dinner->mutex_end);
-	if (philo->dinner->end_of_dinner)
-		return (pthread_mutex_unlock(&philo->dinner->mutex_end), -1);
-	pthread_mutex_unlock(&philo->dinner->mutex_end);
-
 	pthread_mutex_lock(&philo->dinner->mutex_stdout);
 	printf("%li %d %s\n", current_time, philo->id + 1, str_status);
 	pthread_mutex_unlock(&philo->dinner->mutex_stdout);
-	return 0;
 }

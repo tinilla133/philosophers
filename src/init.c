@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:37:17 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/03/17 22:23:41 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/03/19 19:49:33 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	ft_set_fork_numbers(t_philo *philo)
 {
 	philo->l_fork = philo->id;
 	philo->r_fork = (philo->id + 1) % philo->dinner->args->num_philos;
-	if (philo->id % 2 && philo->dinner->args->num_philos % 2 == 0)
+	if ((philo->id % 2) && !(philo->dinner->args->num_philos % 2))
 	{
 		philo->l_fork = (philo->id + 1) % philo->dinner->args->num_philos;
 		philo->r_fork = philo->id;
