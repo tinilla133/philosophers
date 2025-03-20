@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 11:23:06 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/01/07 19:39:49 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/03/21 00:47:55 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static long long	ft_atol(const char *str)
 
 int	ft_parse_args(int argc, char **argv, t_args *args)
 {
-	if (argc < 5  || argc > 6)
+	if (argc < 5 || argc > 6)
 		return (-1);
 	if (ft_valid_characters(argv) == -1)
 		return (-1);
@@ -91,7 +91,6 @@ int	ft_parse_args(int argc, char **argv, t_args *args)
 		args->times_must_eat = (int) ft_atol(argv[5]);
 	else
 		args->times_must_eat = -1;
-	// OJO: Número mínimo de filósofos
 	if (args->num_philos > INT_MAX || args->time_to_die > INT_MAX || \
 		args->time_to_die < 1 || args->time_to_eat > INT_MAX || \
 		args->time_to_eat < 1 || args->time_to_sleep > INT_MAX || \
@@ -99,4 +98,3 @@ int	ft_parse_args(int argc, char **argv, t_args *args)
 		return (-1);
 	return (0);
 }
-

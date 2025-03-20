@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 13:43:31 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/03/19 21:18:35 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/03/21 00:46:29 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,6 @@ static int	ft_grab_forks(t_philo *philo)
 
 static void	ft_drop_forks(t_philo *philo)
 {
-	/*
-	if ((philo->id % 2) && !(philo->dinner->args->num_philos % 2))
-	{
-		pthread_mutex_unlock(&philo->dinner->forks[philo->l_fork]);
-		pthread_mutex_unlock(&philo->dinner->forks[philo->r_fork]);
-	}
-	else
-	{
-		pthread_mutex_unlock(&philo->dinner->forks[philo->r_fork]);
-		pthread_mutex_unlock(&philo->dinner->forks[philo->l_fork]);
-	}
-	*/
 	pthread_mutex_unlock(&philo->dinner->forks[philo->l_fork]);
 	pthread_mutex_unlock(&philo->dinner->forks[philo->r_fork]);
 }
