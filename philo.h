@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 11:18:22 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/03/19 20:12:12 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/03/21 00:46:05 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct s_dinner
 	t_bool			end_of_dinner;
 	pthread_mutex_t	mutex_eating;
 	pthread_mutex_t	mutex_time;
-	pthread_mutex_t	mutex_dead;
 	pthread_mutex_t	mutex_end;
 	pthread_mutex_t	mutex_stdout;
 
