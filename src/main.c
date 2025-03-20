@@ -6,7 +6,11 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:51:52 by fvizcaya          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/03/20 23:51:09 by fvizcaya         ###   ########.fr       */
+=======
+/*   Updated: 2025/03/21 00:54:58 by fvizcaya         ###   ########.fr       */
+>>>>>>> gotica_culona
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +83,4 @@ int	main(int argc, char **argv)
 	ft_init(&dinner);
 	ft_dinner(&dinner);
 	ft_free_memory(&dinner);
-	printf("sizeof t_philo: %lu\n", sizeof(t_philo));
-	printf("sizeof mutex: %lu\n", sizeof(pthread_mutex_t));
-	perror("main:");
 }
