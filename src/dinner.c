@@ -6,7 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 19:20:17 by fvizcaya          #+#    #+#             */
-/*   Updated: 2025/03/19 21:50:28 by fvizcaya         ###   ########.fr       */
+/*   Updated: 2025/03/20 23:49:19 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	ft_stop_dinner(t_dinner *dinner)
 	while (i < dinner->args->num_philos)
 	{
 		pthread_join(dinner->philos[i++].thread, NULL);
+		dinner->philos[i - 1].dinner = NULL;
 	}
 	i = 0;
 	while (i < dinner->args->num_philos)
@@ -101,7 +102,6 @@ void	ft_stop_dinner(t_dinner *dinner)
 	}
 	pthread_mutex_destroy(&dinner->mutex_eating);
 	pthread_mutex_destroy(&dinner->mutex_time);
-	pthread_mutex_destroy(&dinner->mutex_dead);
 	pthread_mutex_destroy(&dinner->mutex_end);
 	pthread_mutex_destroy(&dinner->mutex_stdout);
 }
