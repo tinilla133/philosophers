@@ -6,11 +6,7 @@
 /*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:51:52 by fvizcaya          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/03/20 23:51:09 by fvizcaya         ###   ########.fr       */
-=======
-/*   Updated: 2025/03/21 00:54:58 by fvizcaya         ###   ########.fr       */
->>>>>>> gotica_culona
+/*   Updated: 2025/03/21 01:00:13 by fvizcaya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +73,7 @@ int	main(int argc, char **argv)
 	if (ft_alloc_memory(&dinner) == -1)
 	{
 		ft_free_memory(&dinner);
-		printf("Error allocation memory.\n");
+		printf("Error allocating memory.\n");
 		return (0);
 	}
 	ft_init(&dinner);
