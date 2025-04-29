@@ -1,0 +1,50 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fvizcaya <fvizcaya@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/17 19:56:27 by fvizcaya          #+#    #+#             */
+/*   Updated: 2025/03/17 22:17:01 by fvizcaya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+static void	ft_strcpy(const char *src, char *dst, int len)
+{
+	int	i;
+
+	i = 0;
+	while (src[i] && i < len)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+}
+
+int	ft_print_status(t_philo *philo, t_status status)
+{
+	char	str_status[16];
+	time_t	current_time;
+
+	if (status == picking_fork)
+		ft_strcpy("has taken a fork", str_status, 16);
+	else if (status == eating)
+		ft_strcpy("is eating", str_status, 16);
+	else if (status == sleeping)
+		ft_strcpy("is sleeping", str_status, 16);
+	else if (status == thinking)
+		ft_strcpy("is thinking", str_status, 16);
+	else if (status == dead)
+		ft_strcpy("died", str_status, 16);
+	current_time = ft_get_current_time() - philo->dinner->init_time;
+	if (ft_check_end(philo->dinner))
+		return (-1);
+	pthread_mutex_lock(&philo->dinner->mutex_stdout);
+	printf("%lu %d %s\n", current_time, philo->id + 1, str_status);
+	pthread_mutex_unlock(&philo->dinner->mutex_stdout);
+	return (0);
+}
